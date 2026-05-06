@@ -70,6 +70,12 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
         return getAmountFilled(stack) > 0 ? iconFilled : itemIcon;
     }
     
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(ItemStack stack, int renderPass) {
+        return getIconIndex(stack);
+    }
+    
     public static float getAmountFilled(ItemStack stack) {
         return (float) getBundleOccupancy(stack) / 64.0F;
     }
@@ -164,6 +170,7 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
                 if (optional.isPresent()) {
                     NBTTagCompound NBTTagCompound2 = (NBTTagCompound) optional.get();
                     ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBTTagCompound2);
+                    if (itemStack == null) return 0;
                     ItemStackFuture.increment(itemStack, k);
                     itemStack.writeToNBT(NBTTagCompound2);
                     list.remove(NBTTagCompound2);
@@ -197,7 +204,8 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
             var10000 = var10000.filter(NBTTagCompound.class::isInstance);
             Objects.requireNonNull(NBTTagCompound.class);
             return var10000.map(NBTTagCompound.class::cast).filter((item) -> {
-                return ItemStackFuture.canCombine(ItemStack.loadItemStackFromNBT(item), stack);
+                ItemStack loaded = ItemStack.loadItemStackFromNBT(item);
+                return loaded != null && ItemStackFuture.canCombine(loaded, stack);
             }).findFirst();
         }
     }
@@ -237,10 +245,13 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
             if (tagList.tagCount() == 0) {
                 return null;
             } else {
-                //int i = false;
-                NBTTagCompound NBTTagCompound2 = tagList.getCompoundTagAt(0);
-                ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBTTagCompound2);
-                list.remove(0);
+                // Skip entries that failed to load (e.g. mod removed)
+                ItemStack itemStack = null;
+                while (tagList.tagCount() > 0 && itemStack == null) {
+                    NBTTagCompound NBTTagCompound2 = tagList.getCompoundTagAt(0);
+                    itemStack = ItemStack.loadItemStackFromNBT(NBTTagCompound2);
+                    list.remove(0);
+                }
                 if (tagList.tagCount() == 0) {
                     stack.stackTagCompound.removeTag("Items");
                 }
@@ -261,7 +272,9 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
                 for (int i = 0; i < tagList.tagCount(); ++i) {
                     NBTTagCompound NBTTagCompound2 = tagList.getCompoundTagAt(i);
                     ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBTTagCompound2);
-                    player.dropPlayerItemWithRandomChoice(itemStack, true);
+                    if (itemStack != null) {
+                        player.dropPlayerItemWithRandomChoice(itemStack, true);
+                    }
                 }
             }
 
@@ -278,7 +291,7 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
             NBTTagList NBTTagList = NBTTagCompound.getTagList("Items", 10);
             Stream<NBTBase> var10000 = NBTTagListFuture.toList(NBTTagList).stream();
             Objects.requireNonNull(NBTTagCompound.class);
-            return var10000.map(NBTTagCompound.class::cast).map(ItemStack::loadItemStackFromNBT);
+            return var10000.map(NBTTagCompound.class::cast).map(ItemStack::loadItemStackFromNBT).filter(Objects::nonNull);
         }
     }
     
@@ -295,7 +308,7 @@ public class ItemBundle extends ItemFuture implements IConfigurable {
         tooltip.add(
                 EnumChatFormatting.GRAY + I18n.format("item." + MODID + ".bundle.fullness", getBundleOccupancy(stack), 64));
     }
-/*
+    /*
     public void onItemEntityDestroyed(ItemEntity entity) {
         ItemUsage.spawnItemContents(entity, getBundledStacks(entity.getStack()));
     }
