@@ -34,6 +34,10 @@ public class DMod
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        // Load config first - this is the standard Forge timing
+        ConfigDMod.reload(false);
+        
+        // Then register items with correct config values
         DModItems.preInit();
         MCLibModules.updateCheckAPI.submitModTask(MODID, "@UPDATE_URL@");
     }

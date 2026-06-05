@@ -38,6 +38,7 @@ public class ConfigDMod {
 
     public static List<Item> bundleCraftingItems;
     public static boolean compactBundleGUI;
+    public static boolean modernBundle;
     public static boolean durabilityBarColor;
     
     public static BackpackConfigHelper backpackHelper;
@@ -98,7 +99,8 @@ public class ConfigDMod {
     public static void reload(boolean early) {
         LOGGER.debug("Loading config (" + (early ? "Early" : "Late") + ")");
         
-        Configuration config = new Configuration(new File(Launch.minecraftHome, "config/dmod.cfg"));
+        File configFile = new File(Launch.minecraftHome, "config/dmod.cfg");
+        Configuration config = new Configuration(configFile);
         
         config.load();
         
@@ -110,6 +112,7 @@ public class ConfigDMod {
         durabilityBarColor = config.getBoolean("durabilityBarColor", "Mixins", true, "Change the durability bar color of certain items (bundles)");
         
         compactBundleGUI = config.getBoolean("compactBundleGUI", "bundle", false, "Remove extra spacing between rows in the bundle tooltip.");
+        modernBundle = enableBundle && config.getBoolean("modernBundle", "bundle", false, "Render the bundle with the modern (1.21+) style: colored capacity bar on the item (blue while filling, red when full), and unlocks other modern-style behaviors. Requires enableBundle=true. See https://minecraft.wiki/w/Bundle.");
         
         // TODO tweak the level requirements of each individual ability
         foxAbilityMode = getEnum(config, "foxAbilityMode", "fox", EntityFox.AbilityMode.NORMAL, "NORMAL: Foxes unlock abilities as they level up\nUNLOCK_ALL: All abilities are unlocked from the start\nUNLOCK_NONE: No abilities will ever be unlocked\nNote: changing this won't affect the amount of exp foxes have, just whether the abilities will be enabled or not");

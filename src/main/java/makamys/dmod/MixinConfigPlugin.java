@@ -1,6 +1,7 @@
 package makamys.dmod;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,14 +28,16 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        boolean foxEnabled = ConfigDMod.enableFox;
+        
         if(Arrays.asList(
                 "makamys.dmod.mixin.MixinEntityWolf"
                 ).contains(mixinClassName)){
-            return ConfigDMod.wolvesTargetFoxes;    
+            return ConfigDMod.wolvesTargetFoxes && foxEnabled;    
         } else if(Arrays.asList(
                 "makamys.dmod.mixin.MixinEntityLivingBase"
                 ).contains(mixinClassName)){
-            return ConfigDMod.enableFox && ConfigDMod.lootingFoxFix != ForceableBoolean.FALSE;
+            return foxEnabled && ConfigDMod.lootingFoxFix != ForceableBoolean.FALSE;
         } else if(Arrays.asList(
                 "makamys.dmod.mixin.MixinRenderItem"
                 ).contains(mixinClassName)){
@@ -43,6 +46,10 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
                 "makamys.dmod.mixin.MixinContainer"
                 ).contains(mixinClassName)){
             return ConfigDMod.enableBundle;
+        } else if(Arrays.asList(
+                "makamys.dmod.mixin.MixinEntityLiving"
+                ).contains(mixinClassName)){
+            return foxEnabled;
         } else {
             return true;
         }
@@ -56,8 +63,8 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public List<String> getMixins() {
-        // TODO Auto-generated method stub
-        return null;
+        // Return empty list instead of null
+        return Collections.emptyList();
     }
 
     @Override
