@@ -1,4 +1,28 @@
 item.dmod.bundle.name=Bundle
 item.dmod.bundle.fullness=%s/%s
+item.dmod.bundle.empty=Empty
+item.dmod.bundle.full=Full
+
+item.dmod.stained_bundle.name=Stained Bundle
+item.dmod.stained_bundle.colored.name=%s Bundle
+item.dmod.stained_bundle.fullness=%s/%s
+item.dmod.stained_bundle.empty_hint=Can hold a mixed group of items
+
+color.dmod.white=White
+color.dmod.orange=Orange
+color.dmod.magenta=Magenta
+color.dmod.light_blue=Light Blue
+color.dmod.yellow=Yellow
+color.dmod.lime=Lime
+color.dmod.pink=Pink
+color.dmod.gray=Gray
+color.dmod.light_gray=Light Gray
+color.dmod.cyan=Cyan
+color.dmod.purple=Purple
+color.dmod.blue=Blue
+color.dmod.brown=Brown
+color.dmod.green=Green
+color.dmod.red=Red
+color.dmod.black=Black
 
 entity.dmod.fox.name=Fox
