@@ -19,7 +19,7 @@ import makamys.mclib.core.MCLib;
 import makamys.mclib.core.MCLibModules;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid = MODID, version = VERSION)
+@Mod(modid = MODID, version = VERSION, dependencies = "required-after:dfdvdsfsAPI")
 public class DMod
 {   
     @Instance(MODID)
