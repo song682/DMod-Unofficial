@@ -106,28 +106,59 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, int button, EntityPlayer player) {
-        if (button != 1) {
+        if (button != 0 && button != 1) {
             return false;
-        } else {
-            ItemStack itemStack = slot.getStack();
-            if (itemStack == null) {
+        }
+        ItemStack itemStack = slot.getStack();
+        if (itemStack == null) {
+            if (button == 1) {
                 ItemStack removed = BundleContents.removeFirst(stack);
                 if (removed != null) {
                     BundleContents.add(stack, SlotFuture.insertStack(slot, removed));
                 }
-            } else if (BundleContents.isAllowed(itemStack)) {
-                int count = (BundleContents.MAX_STORAGE - BundleContents.getOccupancy(stack)) / BundleContents.getItemOccupancy(itemStack);
-                BundleContents.add(stack, SlotFuture.takeStackRange(slot, itemStack.stackSize, count, player));
+                return true;
             }
+            return false;
+        } else if (BundleContents.isAllowed(itemStack)) {
+            int count = (BundleContents.MAX_STORAGE - BundleContents.getOccupancy(stack)) / BundleContents.getItemOccupancy(itemStack);
+            BundleContents.add(stack, SlotFuture.takeStackRange(slot, itemStack.stackSize, count, player));
+            return true;
+        } else {
+            // 黑名单物品：消费点击（与 1.17 一致，不装入也不执行原版交互）。
+            // (Blacklisted item: consume the click like 1.17, no insert and no
+            // vanilla interaction.)
             return true;
         }
     }
 
+    /**
+     * 光标悬停在收纳袋上时的点击交互（stack = 格子里的袋子）：
+     * <ul>
+     *   <li>左键（button 0）：不消费，走原版逻辑拿起收纳袋</li>
+     *   <li>右键且光标为空（button 1, otherStack == null）：滚轮选中过则取出选中的
+     *       一组（取出即闭合），否则取出最后放入的一组，放到光标上</li>
+     *   <li>光标有物品时点击袋子（button 0/1, otherStack != null）：把光标物品
+     *       装入袋子（“拿起其它物品左键点击袋子”收纳场景）</li>
+     * </ul>
+     * <p>Click interactions while the cursor is over a bundle in a slot
+     * (stack = the bundle in the slot):
+     * <ul>
+     *   <li>Left click (button 0) is not consumed: vanilla pickup of the bundle</li>
+     *   <li>Right click with an empty cursor (button 1, otherStack == null) takes
+     *       the selected group when the wheel selection is active (taking closes the
+     *       bundle), otherwise the most recently inserted group, onto the cursor</li>
+     *   <li>Clicking the bundle with an item on the cursor (button 0/1,
+     *       otherStack != null) inserts the cursor item into the bundle</li>
+     * </ul>
+     */
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, int button, EntityPlayer player) {
         if (button == 1 && SlotFuture.canTakePartial(slot, player)) {
             if (otherStack == null) {
-                ItemStack removed = BundleContents.removeFirst(stack);
+                ItemStack removed = BundleContents.removeSelected(stack);
+                if (removed == null) {
+                    removed = BundleContents.removeFirst(stack);
+                }
                 if (removed != null) {
                     player.inventory.setItemStack(removed);
                 }
@@ -137,6 +168,15 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
                 if (otherStack == null) {
                     player.inventory.setItemStack(null);
                 }
+            }
+            return true;
+        } else if (button == 0 && otherStack != null) {
+            // 拿起（非收纳袋）物品时左键点击袋子 → 物品装入袋子。
+            // (Left-clicking the bundle while holding a non-bundle item inserts it.)
+            otherStack.stackSize -= BundleContents.add(stack, otherStack);
+            otherStack = ItemStackFuture.oldify(otherStack);
+            if (otherStack == null) {
+                player.inventory.setItemStack(null);
             }
             return true;
         } else {

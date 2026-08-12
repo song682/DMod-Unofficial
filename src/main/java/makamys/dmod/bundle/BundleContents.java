@@ -161,6 +161,12 @@ public class BundleContents {
                     copy.writeToNBT(entry);
                     add(tagList, 0, entry);
                 }
+                // 新条目插入列表头：选中索引随之前移，保持选中的条目不变。
+                // (A new entry is inserted at the list head; shift the selected
+                // index forward so the selected entry stays the same.)
+                if (nbt.hasKey("Sel")) {
+                    nbt.setInteger("Sel", nbt.getInteger("Sel") + 1);
+                }
                 return count;
             }
         } else {
@@ -189,6 +195,45 @@ public class BundleContents {
             removed = ItemStack.loadItemStackFromNBT(entry);
             list.remove(0);
         }
+        if (tagList.tagCount() == 0) {
+            stack.stackTagCompound.removeTag("Items");
+            stack.stackTagCompound.removeTag("Sel");
+        } else if (removed != null && nbt.hasKey("Sel")) {
+            // 移除列表头后选中索引随之前移；选中的正是被移除项时清除选中（闭合）。
+            // (After removing the list head the selected index shifts forward;
+            // if the removed entry was the selected one, the selection is cleared.)
+            int sel = nbt.getInteger("Sel");
+            if (sel <= 0) {
+                nbt.removeTag("Sel");
+            } else {
+                nbt.setInteger("Sel", sel - 1);
+            }
+        }
+        return removed;
+    }
+
+    /**
+     * 取出并返回选中索引对应的条目，随后清除选中（取出即闭合）。未选中时返回 null；
+     * 选中条目损坏时同样移除该条目并清除选中，返回 null。
+     * <p>Take and return the entry at the selected index, then clear the selection
+     * (taking closes the bundle). Returns null when nothing is selected; a corrupt
+     * selected entry is removed and the selection cleared as well.
+     */
+    public static ItemStack removeSelected(ItemStack stack) {
+        int idx = getSelectedIndex(stack);
+        if (idx < 0) {
+            return null;
+        }
+        NBTTagCompound nbt = ItemStackFuture.getOrCreateNbt(stack);
+        NBTTagList tagList = nbt.getTagList("Items", 10);
+        if (idx >= tagList.tagCount()) {
+            return null;
+        }
+        List<NBTBase> list = toList(tagList);
+        NBTTagCompound entry = tagList.getCompoundTagAt(idx);
+        ItemStack removed = ItemStack.loadItemStackFromNBT(entry);
+        list.remove(idx);
+        nbt.removeTag("Sel");
         if (tagList.tagCount() == 0) {
             stack.stackTagCompound.removeTag("Items");
         }
