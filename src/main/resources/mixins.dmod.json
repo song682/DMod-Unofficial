@@ -9,11 +9,13 @@
     	"AccessorEntityAIMate",
     	"AccessorEntityAITarget",
     	"AccessorEntityAINearestAttackableTarget",
+    	"AccessorGuiContainer",
     	"AccessorItemFood",
     	"MixinEntityLiving",
     	"MixinEntityWolf",
     	"MixinEntityLivingBase",
     	"MixinContainer",
+    	"MixinGuiScreen",
     	"MixinRenderItem"
     ],
     "plugin": "makamys.dmod.MixinConfigPlugin"

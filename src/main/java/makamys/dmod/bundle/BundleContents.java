@@ -111,6 +111,18 @@ public class BundleContents {
         return ItemStack.loadItemStackFromNBT(tagList.getCompoundTagAt(0));
     }
 
+    /**
+     * 返回袋内条目数（直接读 {@code "Items"} 列表长度，不做 NBT 反序列化；
+     * 损坏条目也计入，与选中索引的钳制范围一致）。用于滚轮选择的环绕范围。
+     */
+    public static int getEntryCount(ItemStack stack) {
+        NBTTagCompound nbt = stack != null ? stack.stackTagCompound : null;
+        if (nbt == null || !nbt.hasKey("Items")) {
+            return 0;
+        }
+        return nbt.getTagList("Items", 10).tagCount();
+    }
+
     // ==================== 写入 ====================
 
     /**

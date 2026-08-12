@@ -45,7 +45,7 @@ import net.minecraft.world.World;
  *   <li>{@code dmod:bundle/color} — 16 色分派（仅染色变体）</li>
  *   <li>{@code dmod:bundle/has_selected_item} — 是否已选中物品（完成时态：
  *       只有显式写过 {@code "Sel"} 才算选中；false=闭合、true=打开）</li>
- *   <li>{@code dmod:bundle/selected_item} — 选中索引（未来滚轮选择）</li>
+ *   <li>{@code dmod:bundle/selected_item} — 选中索引（滚轮选择写入）</li>
  * </ul>
  * 交互（onStackClicked / onClicked / onItemRightClick）与耐久条逻辑委托
  * {@link BundleContents} 数据层。
@@ -151,6 +151,34 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
             user.addStat(StatList.objectUseStats[Item.getIdFromItem(this)], 1);
         }
         return itemStack;
+    }
+
+    /**
+     * 滚轮循环切换选中索引（0..n-1 环绕）。未选中时向上滚选中第一个、向下滚选中
+     * 最后一个；空袋或滚轮无输入时不操作。返回是否发生切换（供调用方决定是否
+     * 刷新格子以同步 NBT 到服务端）。
+     * <p>Cycle the selected index with the scroll wheel (wrapping around). With no
+     * selection yet, scrolling up selects the first entry and scrolling down selects
+     * the last; empty bundles and zero wheel input are no-ops. Returns true when the
+     * selection changed, so callers can refresh the slot to sync the NBT.
+     */
+    public static boolean scrollSelectedIndex(ItemStack stack, int dWheel) {
+        if (dWheel == 0) {
+            return false;
+        }
+        int count = BundleContents.getEntryCount(stack);
+        if (count == 0) {
+            return false;
+        }
+        int idx = BundleContents.getSelectedIndex(stack);
+        int newIdx;
+        if (idx < 0) {
+            newIdx = dWheel > 0 ? 0 : count - 1;
+        } else {
+            newIdx = (idx + (dWheel > 0 ? 1 : -1) + count) % count;
+        }
+        BundleContents.setSelectedIndex(stack, newIdx);
+        return true;
     }
 
     // ==================== 耐久条（现代风格，经典同步升级） ====================
