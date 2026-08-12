@@ -1,297 +1,265 @@
 {
   "model": {
     "type": "minecraft:select",
-    "property": "minecraft:display_context",
+    "property": "dmod:bundle/color",
+    "fallback": { "type": "minecraft:model", "model": "dmod:item/white_bundle" },
     "cases": [
       {
-        "when": ["ITEM_GUI"],
+        "when": "0",
         "model": {
-          "type": "minecraft:select",
-          "property": "dmod:bundle/color",
-          "fallback": { "type": "minecraft:model", "model": "dmod:item/white_bundle" },
-          "cases": [
-            {
-              "when": ["0"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/white_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/white_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/white_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["1"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/orange_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/orange_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/orange_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["2"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/magenta_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/magenta_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/magenta_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["3"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["4"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/yellow_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/yellow_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/yellow_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["5"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/lime_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/lime_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/lime_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["6"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/pink_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/pink_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/pink_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["7"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/gray_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/gray_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/gray_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["8"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["9"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/cyan_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/cyan_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/cyan_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["10"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/purple_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/purple_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/purple_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["11"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/blue_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/blue_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/blue_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["12"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/brown_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/brown_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/brown_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["13"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/green_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/green_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/green_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["14"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/red_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/red_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/red_bundle_open_front" }
-                  ]
-                }
-              }
-            },
-            {
-              "when": ["15"],
-              "model": {
-                "type": "minecraft:condition",
-                "property": "dmod:bundle/has_selected_item",
-                "on_false": { "type": "minecraft:model", "model": "dmod:item/black_bundle" },
-                "on_true": {
-                  "type": "minecraft:composite",
-                  "models": [
-                    { "type": "minecraft:model", "model": "dmod:item/black_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
-                    { "type": "minecraft:model", "model": "dmod:item/black_bundle_open_front" }
-                  ]
-                }
-              }
-            }
-          ]
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/white_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/white_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/white_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "1",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/orange_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/orange_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/orange_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "2",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/magenta_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/magenta_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/magenta_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "3",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "4",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/yellow_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/yellow_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/yellow_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "5",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/lime_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/lime_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/lime_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "6",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/pink_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/pink_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/pink_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "7",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/gray_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/gray_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/gray_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "8",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "9",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/cyan_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/cyan_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/cyan_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "10",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/purple_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/purple_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/purple_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "11",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/blue_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/blue_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/blue_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "12",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/brown_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/brown_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/brown_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "13",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/green_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/green_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/green_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "14",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/red_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/red_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/red_bundle_open_front" }
+            ]
+          }
+        }
+      },
+      {
+        "when": "15",
+        "model": {
+          "type": "minecraft:condition",
+          "property": "dmod:bundle/has_selected_item",
+          "on_false": { "type": "minecraft:model", "model": "dmod:item/black_bundle" },
+          "on_true": {
+            "type": "minecraft:composite",
+            "models": [
+              { "type": "minecraft:model", "model": "dmod:item/black_bundle_open_back" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/black_bundle_open_front" }
+            ]
+          }
         }
       }
-    ],
-    "fallback": {
-      "type": "minecraft:select",
-      "property": "dmod:bundle/color",
-      "fallback": { "type": "minecraft:model", "model": "dmod:item/white_bundle" },
-      "cases": [
-        { "when": ["0"], "model": { "type": "minecraft:model", "model": "dmod:item/white_bundle" } },
-        { "when": ["1"], "model": { "type": "minecraft:model", "model": "dmod:item/orange_bundle" } },
-        { "when": ["2"], "model": { "type": "minecraft:model", "model": "dmod:item/magenta_bundle" } },
-        { "when": ["3"], "model": { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle" } },
-        { "when": ["4"], "model": { "type": "minecraft:model", "model": "dmod:item/yellow_bundle" } },
-        { "when": ["5"], "model": { "type": "minecraft:model", "model": "dmod:item/lime_bundle" } },
-        { "when": ["6"], "model": { "type": "minecraft:model", "model": "dmod:item/pink_bundle" } },
-        { "when": ["7"], "model": { "type": "minecraft:model", "model": "dmod:item/gray_bundle" } },
-        { "when": ["8"], "model": { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle" } },
-        { "when": ["9"], "model": { "type": "minecraft:model", "model": "dmod:item/cyan_bundle" } },
-        { "when": ["10"], "model": { "type": "minecraft:model", "model": "dmod:item/purple_bundle" } },
-        { "when": ["11"], "model": { "type": "minecraft:model", "model": "dmod:item/blue_bundle" } },
-        { "when": ["12"], "model": { "type": "minecraft:model", "model": "dmod:item/brown_bundle" } },
-        { "when": ["13"], "model": { "type": "minecraft:model", "model": "dmod:item/green_bundle" } },
-        { "when": ["14"], "model": { "type": "minecraft:model", "model": "dmod:item/red_bundle" } },
-        { "when": ["15"], "model": { "type": "minecraft:model", "model": "dmod:item/black_bundle" } }
-      ]
-    }
+    ]
   }
 }
