@@ -25,7 +25,7 @@ import net.minecraft.nbt.NBTTagList;
  * <p>
  * NBT 结构与旧存档逐字节兼容：{@code "Items"} 为 {@code NBTTagList}（每项一个
  * ItemStack 的 NBTTagCompound，新插入的条目在列表头部）；新增可选 {@code "Sel"}
- * int 字段保存选中索引（缺省：有内容 0、无内容 -1），供未来的滚轮选择功能使用。
+ * int 字段保存选中索引（缺省 -1 = 未选择），供未来的滚轮选择功能使用。
  * <p>
  * The single data layer for bundle contents — the only entry point for reading and
  * writing the {@code "Items"} list. Merged from the duplicated static methods of the
@@ -97,7 +97,7 @@ public class BundleContents {
     }
 
     /**
-     * 返回袋内首条目（列表头，即最新插入的物品），用于渲染与 tooltip。损坏条目返回 null。
+     * 返回袋内首条目（列表头，即最新插入的物品）。损坏条目返回 null。
      */
     public static ItemStack getFirstItem(ItemStack stack) {
         NBTTagCompound nbt = stack != null ? stack.stackTagCompound : null;
@@ -209,22 +209,35 @@ public class BundleContents {
     // ==================== 选中索引（未来滚轮选择，已预埋） ====================
 
     /**
-     * 读取选中索引。缺省：有内容 0、无内容 -1；越界钳制为 -1。
+     * 读取选中索引。未写入过 {@code "Sel"}（从未选择）时返回 -1；越界钳制为 -1。
+     * 注意：有内容但未显式选择同样返回 -1 —— 选中是显式状态（完成时态语义），
+     * 只有写过 {@code "Sel"} 才算“已选中”。
      */
     public static int getSelectedIndex(ItemStack stack) {
         NBTTagCompound nbt = stack != null ? stack.stackTagCompound : null;
-        if (nbt == null || !nbt.hasKey("Items")) {
+        if (nbt == null || !nbt.hasKey("Sel")) {
             return -1;
         }
         NBTTagList tagList = nbt.getTagList("Items", 10);
-        if (tagList.tagCount() == 0) {
-            return -1;
-        }
-        if (!nbt.hasKey("Sel")) {
-            return 0;
-        }
         int sel = nbt.getInteger("Sel");
         return sel >= 0 && sel < tagList.tagCount() ? sel : -1;
+    }
+
+    /**
+     * 返回选中索引对应的条目；未选中、越界或条目损坏时返回 null。
+     * 渲染层用它显示“袋口选中的物品”（open 状态下被展示的那一项）。
+     */
+    public static ItemStack getSelectedStack(ItemStack stack) {
+        int idx = getSelectedIndex(stack);
+        if (idx < 0) {
+            return null;
+        }
+        NBTTagCompound nbt = stack != null ? stack.stackTagCompound : null;
+        if (nbt == null) {
+            return null;
+        }
+        NBTTagList tagList = nbt.getTagList("Items", 10);
+        return idx < tagList.tagCount() ? ItemStack.loadItemStackFromNBT(tagList.getCompoundTagAt(idx)) : null;
     }
 
     /**

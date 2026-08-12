@@ -43,7 +43,8 @@ import net.minecraft.world.World;
  * {@link #getPropertyDefinitions()} 声明，由 CatFrame 发现阶段自动注册：
  * <ul>
  *   <li>{@code dmod:bundle/color} — 16 色分派（仅染色变体）</li>
- *   <li>{@code dmod:bundle/has_selected_item} — 袋内是否有物品（open/closed 切换）</li>
+ *   <li>{@code dmod:bundle/has_selected_item} — 是否已选中物品（完成时态：
+ *       只有显式写过 {@code "Sel"} 才算选中；false=闭合、true=打开）</li>
  *   <li>{@code dmod:bundle/selected_item} — 选中索引（未来滚轮选择）</li>
  * </ul>
  * 交互（onStackClicked / onClicked / onItemRightClick）与耐久条逻辑委托
@@ -86,7 +87,7 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
         if (colored) {
             props.put("dmod:bundle/color", (stack, phase) -> stack != null ? (stack.getItemDamage() & 0xF) : 0);
         }
-        props.put("dmod:bundle/has_selected_item", (stack, phase) -> BundleContents.getFirstItem(stack) != null);
+        props.put("dmod:bundle/has_selected_item", (stack, phase) -> BundleContents.getSelectedIndex(stack) >= 0);
         props.put("dmod:bundle/selected_item", (stack, phase) -> BundleContents.getSelectedIndex(stack));
         return props;
     }

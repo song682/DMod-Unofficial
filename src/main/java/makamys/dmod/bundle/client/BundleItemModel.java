@@ -111,23 +111,23 @@ public class BundleItemModel extends ItemStateModel {
     }
 
     /**
-     * 渲染袋内首条目（袋口层叠的物品）。已知限制：首条目无 CatFrame 模型时跳过该层
-     * （袋口不显示物品），不做原版渲染回退。
+     * 渲染袋内选中的条目（袋口层叠的物品）。已知限制：选中条目无 CatFrame 模型时跳过
+     * 该层（袋口不显示物品），不做原版渲染回退。
      */
     private void renderSelectedItemLayer(ItemStack stack, RenderPhase phase, @Nullable Matrix4d preTransform) {
-        ItemStack first = BundleContents.getFirstItem(stack);
-        if (first == null) return;
-        Item firstItem = first.getItem();
-        if (firstItem == null || !ModelRegistry.hasItemModel(firstItem)) {
-            // 首条目未接入 CatFrame 模型系统 → 跳过该层（袋口不显示物品）
+        ItemStack selected = BundleContents.getSelectedStack(stack);
+        if (selected == null) return;
+        Item selectedItem = selected.getItem();
+        if (selectedItem == null || !ModelRegistry.hasItemModel(selectedItem)) {
+            // 选中条目未接入 CatFrame 模型系统 → 跳过该层（袋口不显示物品）
             return;
         }
-        // 防嵌套递归：首条目注册的模型就是本模型（即同一物品套自己）时跳过。
+        // 防嵌套递归：选中条目注册的模型就是本模型（即同一物品套自己）时跳过。
         // 重量上限（4/64 每层）天然限制嵌套深度，此处再兜底。
-        if (ModelRegistry.getRegisteredItemModel(firstItem) == this) {
+        if (ModelRegistry.getRegisteredItemModel(selectedItem) == this) {
             return;
         }
-        ModelRegistry.getRegisteredItemModel(firstItem).render(first, phase, preTransform);
+        ModelRegistry.getRegisteredItemModel(selectedItem).render(selected, phase, preTransform);
     }
 
     /**
