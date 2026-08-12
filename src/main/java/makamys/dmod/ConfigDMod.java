@@ -111,6 +111,8 @@ public class ConfigDMod {
         lootingFoxFix = getEnum(config, "lootingFoxFix", "Mixins", ForceableBoolean.TRUE, "Make looting enchants of fox weapons have an effect.", true);
         durabilityBarColor = config.getBoolean("durabilityBarColor", "Mixins", true, "Change the durability bar color of certain items (bundles)");
         
+        // Deprecated: kept only for config-file compatibility (the unified
+        // BundleTooltipRenderer no longer consumes this key).
         compactBundleGUI = config.getBoolean("compactBundleGUI", "bundle", false, "Remove extra spacing between rows in the bundle tooltip.");
         modernBundle = enableBundle && config.getBoolean("modernBundle", "bundle", false, "Render the bundle with the modern (1.21+) style: colored capacity bar on the item (blue while filling, red when full), and unlocks other modern-style behaviors. Requires enableBundle=true. See https://minecraft.wiki/w/Bundle.");
         

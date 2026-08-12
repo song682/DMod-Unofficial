@@ -44,6 +44,10 @@ import makamys.dmod.future.item.ItemStackFuture;
 import makamys.dmod.future.predicate.entity.EntityPredicates;
 import makamys.dmod.future.util.MathHelperFuture;
 import makamys.dmod.future.world.EntityViewEmulator;
+import makamys.dmod.mixin.AccessorBlock;
+import makamys.dmod.mixin.AccessorEntityAIMate;
+import makamys.dmod.mixin.AccessorEntityAINearestAttackableTarget;
+import makamys.dmod.mixin.AccessorEntityAITarget;
 import makamys.dmod.util.DUtil;
 import makamys.dmod.util.WeightedRandomItem;
 import net.minecraft.block.Block;
@@ -69,6 +73,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
@@ -1280,7 +1285,9 @@ public class EntityFox extends EntityAnimalFuture implements ITameable {
                     }
 
                     if (j > 0) {
-                        block.dropBlockAsItem(EntityFox.this.worldObj, x, y, z, new ItemStack(bbs.handler.getSweetBerryItem(), j));
+                        // Call the protected method through the mixin invoker (replaces the dmod_at.cfg entry).
+                        // 通过 mixin invoker 调用 protected 方法（替代 dmod_at.cfg 条目）。
+                        ((AccessorBlock)block).callDropBlockAsItem(EntityFox.this.worldObj, x, y, z, new ItemStack(bbs.handler.getSweetBerryItem(), j));
                     }
 
                     EntityFox.this.playSound("item.sweet_berries.pick_from_bush", 1.0F, 1.0F);
@@ -1508,7 +1515,7 @@ public class EntityFox extends EntityAnimalFuture implements ITameable {
 
         @Override
         public boolean shouldExecute() {
-            if (this.targetChance > 0 && EntityFox.this.getRNG().nextInt(this.targetChance) != 0) {
+            if (((AccessorEntityAINearestAttackableTarget)this).getTargetChance() > 0 && EntityFox.this.getRNG().nextInt(((AccessorEntityAINearestAttackableTarget)this).getTargetChance()) != 0) {
                 return false;
             } else {
                 Iterator<UUID> var1 = EntityFox.this.getTrustedUuids().iterator();
@@ -1543,16 +1550,21 @@ public class EntityFox extends EntityAnimalFuture implements ITameable {
                         MathHelper.floor_double(target.posZ))) {
                     return false;
                 } else {
-                    if (this.nearbyOnly) {
-                        if (--this.targetSearchDelay <= 0) {
-                            this.targetSearchStatus = 0;
+                    // Access the private parent members through the mixin accessor (replaces dmod_at.cfg entries).
+                    // 通过 mixin accessor 访问父类私有成员（替代 dmod_at.cfg 条目）。
+                    AccessorEntityAITarget targetAccessor = (AccessorEntityAITarget)this;
+                    if (targetAccessor.getNearbyOnly()) {
+                        int searchDelay = targetAccessor.getTargetSearchDelay() - 1;
+                        targetAccessor.setTargetSearchDelay(searchDelay);
+                        if (searchDelay <= 0) {
+                            targetAccessor.setTargetSearchStatus(0);
                         }
 
-                        if (this.targetSearchStatus == 0) {
-                            this.targetSearchStatus = this.canEasilyReach(target) ? 1 : 2;
+                        if (targetAccessor.getTargetSearchStatus() == 0) {
+                            targetAccessor.setTargetSearchStatus(targetAccessor.invokeCanEasilyReach(target) ? 1 : 2);
                         }
 
-                        if (this.targetSearchStatus == 2) {
+                        if (targetAccessor.getTargetSearchStatus() == 2) {
                             return false;
                         }
                     }
@@ -1564,7 +1576,7 @@ public class EntityFox extends EntityAnimalFuture implements ITameable {
         @Override
         public void startExecuting() {
             // this.setTargetEntity(this.offender); // NOP
-            this.targetEntity = this.offender;
+            ((AccessorEntityAINearestAttackableTarget)this).setTargetEntity(this.offender);
             if (EntityFox.this.friend != null) {
                 this.lastAttackedTime = EntityFox.this.friend.getLastAttackerTime();
             }
@@ -1587,19 +1599,33 @@ public class EntityFox extends EntityAnimalFuture implements ITameable {
             super(EntityFox.this, chance);
         }
 
-        @Override
-        public void startExecuting() {
-            ((EntityFox)this.theAnimal).stopActions();
-            ((EntityFox)this.targetMate).stopActions();
-            super.startExecuting();
+        // Access the private parent fields through the mixin accessor (replaces dmod_at.cfg entries).
+        // 通过 mixin accessor 访问父类私有字段（替代 dmod_at.cfg 条目）。
+        private EntityAnimal getAnimal() {
+            return ((AccessorEntityAIMate)this).getTheAnimal();
+        }
+
+        private EntityAnimal getMate() {
+            return ((AccessorEntityAIMate)this).getTargetMate();
         }
 
         @Override
+        public void startExecuting() {
+            ((EntityFox)getAnimal()).stopActions();
+            ((EntityFox)getMate()).stopActions();
+            super.startExecuting();
+        }
+
+        // Note: vanilla EntityAIMate#spawnBaby is private, so the parent's updateTask() invokes its own copy
+        // via invokespecial and this method is never dispatched (same behavior as with the access transformer).
+        // The body is kept intact so the custom breeding logic (trust, experience) remains available.
+        // 注意：原版 EntityAIMate#spawnBaby 是 private，父类 updateTask() 通过 invokespecial 调用自身版本，
+        // 本方法不会被动态分发（与使用访问转换器时行为一致）；保留方法体以维持自定义繁殖逻辑（信任、经验）。
         protected void spawnBaby() {
-            EntityFox EntityFox = (EntityFox)this.theAnimal.createChild(this.targetMate);
+            EntityFox EntityFox = (EntityFox)getAnimal().createChild(getMate());
             if (EntityFox != null) {
-                EntityPlayer serverPlayerEntity = this.theAnimal.func_146083_cb();
-                EntityPlayer serverPlayerEntity2 = this.targetMate.func_146083_cb();
+                EntityPlayer serverPlayerEntity = getAnimal().func_146083_cb();
+                EntityPlayer serverPlayerEntity2 = getMate().func_146083_cb();
                 EntityPlayer serverPlayerEntity3 = serverPlayerEntity;
                 if (serverPlayerEntity != null) {
                     EntityFox.addTrustedUuid(serverPlayerEntity.getUniqueID());
@@ -1611,24 +1637,24 @@ public class EntityFox extends EntityAnimalFuture implements ITameable {
                     EntityFox.addTrustedUuid(serverPlayerEntity2.getUniqueID());
                 }
                 
-                EntityFox.setExperience(Math.max(0, (((EntityFox)this.theAnimal).getExperience() + ((EntityFox)this.targetMate).getExperience()) / 2f - this.theAnimal.getRNG().nextFloat() * 10f));
+                EntityFox.setExperience(Math.max(0, (((EntityFox)getAnimal()).getExperience() + ((EntityFox)getMate()).getExperience()) / 2f - getAnimal().getRNG().nextFloat() * 10f));
                 
                 if (serverPlayerEntity3 != null)
                 {
                     serverPlayerEntity3.triggerAchievement(StatList.field_151186_x);
                 }
 
-                this.theAnimal.setGrowingAge(6000);
-                this.targetMate.setGrowingAge(6000);
-                this.theAnimal.resetInLove();
-                this.targetMate.resetInLove();
+                getAnimal().setGrowingAge(6000);
+                getMate().setGrowingAge(6000);
+                getAnimal().resetInLove();
+                getMate().resetInLove();
                 EntityFox.setGrowingAge(-24000);
-                EntityFox.setLocationAndAngles(this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, 0.0F, 0.0F);
+                EntityFox.setLocationAndAngles(getAnimal().posX, getAnimal().posY, getAnimal().posZ, 0.0F, 0.0F);
                 EntityFox.this.worldObj.spawnEntityInWorld(EntityFox);
-                EntityFox.this.worldObj.setEntityState(this.theAnimal, (byte)18);
+                EntityFox.this.worldObj.setEntityState(getAnimal(), (byte)18);
                 if (EntityFox.this.worldObj.getGameRules().getGameRuleBooleanValue("doMobLoot"))
                 {
-                     EntityFox.this.worldObj.spawnEntityInWorld(new EntityXPOrb(EntityFox.this.worldObj, this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, EntityFox.this.rand.nextInt(7) + 1));
+                     EntityFox.this.worldObj.spawnEntityInWorld(new EntityXPOrb(EntityFox.this.worldObj, getAnimal().posX, getAnimal().posY, getAnimal().posZ, EntityFox.this.rand.nextInt(7) + 1));
                 }
 
             }

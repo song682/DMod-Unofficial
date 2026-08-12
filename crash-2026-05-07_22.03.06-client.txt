@@ -1,0 +1,387 @@
+---- Minecraft Crash Report ----
+// Who set us up the TNT?
+
+Time: 2026-05-07 22:03:06 CST
+Description: Initializing game
+
+cpw.mods.fml.common.LoaderException: java.lang.NoClassDefFoundError: makamys/dmod/repackage/makamys/mclib/core/MCLib
+    at cpw.mods.fml.common.LoadController.transition(LoadController.java:163)
+    at cpw.mods.fml.common.Loader.loadMods(Loader.java:544)
+    at cpw.mods.fml.client.FMLClientHandler.beginMinecraftLoading(FMLClientHandler.java:208)
+    at net.minecraft.client.Minecraft.func_71384_a(Minecraft.java:480)
+    at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:8099)
+    at net.minecraft.client.main.Main.main(SourceFile:148)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+    at java.lang.reflect.Method.invoke(Unknown Source)
+    at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+    at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+Caused by: java.lang.NoClassDefFoundError: makamys/dmod/repackage/makamys/mclib/core/MCLib
+    at makamys.dmod.DMod.<clinit>(DMod.java:32)
+    at java.lang.Class.forName0(Native Method)
+    at java.lang.Class.forName(Unknown Source)
+    at cpw.mods.fml.common.FMLModContainer.constructMod(FMLModContainer.java:440)
+    at sun.reflect.GeneratedMethodAccessor14.invoke(Unknown Source)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+    at java.lang.reflect.Method.invoke(Unknown Source)
+    at com.google.common.eventbus.EventSubscriber.handleEvent(EventSubscriber.java:74)
+    at com.google.common.eventbus.SynchronizedEventSubscriber.handleEvent(SynchronizedEventSubscriber.java:47)
+    at com.google.common.eventbus.EventBus.dispatch(EventBus.java:322)
+    at com.google.common.eventbus.EventBus.dispatchQueuedEvents(EventBus.java:304)
+    at com.google.common.eventbus.EventBus.post(EventBus.java:275)
+    at cpw.mods.fml.common.LoadController.sendEventToModContainer(LoadController.java:212)
+    at cpw.mods.fml.common.LoadController.propogateStateMessage(LoadController.java:190)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+    at java.lang.reflect.Method.invoke(Unknown Source)
+    at com.google.common.eventbus.EventSubscriber.handleEvent(EventSubscriber.java:74)
+    at com.google.common.eventbus.SynchronizedEventSubscriber.handleEvent(SynchronizedEventSubscriber.java:47)
+    at com.google.common.eventbus.EventBus.dispatch(EventBus.java:322)
+    at com.google.common.eventbus.EventBus.dispatchQueuedEvents(EventBus.java:304)
+    at com.google.common.eventbus.EventBus.post(EventBus.java:275)
+    at cpw.mods.fml.common.LoadController.distributeStateMessage(LoadController.java:119)
+    at cpw.mods.fml.common.Loader.loadMods(Loader.java:513)
+    ... 10 more
+Caused by: java.lang.ClassNotFoundException: makamys.dmod.repackage.makamys.mclib.core.MCLib
+    at net.minecraft.launchwrapper.LaunchClassLoader.findClass(LaunchClassLoader.java:191)
+    at java.lang.ClassLoader.loadClass(Unknown Source)
+    at java.lang.ClassLoader.loadClass(Unknown Source)
+    ... 35 more
+Caused by: java.lang.NullPointerException
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Initialization --
+Details:
+Stacktrace:
+    at net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:8099)
+    at net.minecraft.client.main.Main.main(SourceFile:148)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+    at java.lang.reflect.Method.invoke(Unknown Source)
+    at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+    at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+-- System Details --
+Details:
+    Minecraft Version: 1.7.10
+    Operating System: Windows 11 (amd64) version 10.0
+    Java Version: 1.8.0_481, Oracle Corporation
+    Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+    Memory: 1938093576 bytes (1848 MB) / 4074766336 bytes (3886 MB) up to 10737418240 bytes (10240 MB)
+    JVM Flags: 3 total; -Xms0m -Xmx10240m -XX:+UseG1GC
+    AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+    IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+    FML: MCP v9.05 FML v7.10.99.99 Minecraft Forge 10.13.4.1614 232 mods loaded, 232 mods active
+    States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+    UC    mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) 
+    UC    FML{7.10.99.99} [Forge Mod Loader] (forge-1.7.10-10.13.4.1614-1.7.10.jar) 
+    UC    Forge{10.13.4.1614} [Minecraft Forge] (forge-1.7.10-10.13.4.1614-1.7.10.jar) 
+    UC    appliedenergistics2-core{rv3-beta-891-GTNH} [Applied Energistics 2 Core] (minecraft.jar) 
+    UC    CodeChickenCore{1.4.12} [CodeChicken Core] (minecraft.jar) 
+    UC    InputFix{1.7.10-v6} [InputFix] (minecraft.jar) 
+    UC    NotEnoughItems{2.8.96-GTNH} [NotEnoughItems] (NotEnoughItems-2.8.96-GTNH.jar) 
+    UC    VillagerMetaFix{0.3} [VillagerMetaFix] (VillagerMetaFix-0.4.jar) 
+    UC    chunkapicore{0.8.2} [ChunkAPI Core] (minecraft.jar) 
+    UC    endlessids_biome{1.7.1} [EndlessIDs Biome Module] (minecraft.jar) 
+    UC    endlessids_blockitem{1.7.1} [EndlessIDs BlockItem Module] (minecraft.jar) 
+    UC    endlessids_datawatcher{1.7.1} [EndlessIDs DataWatcher Module] (minecraft.jar) 
+    UC    endlessids_enchantment{1.7.1} [EndlessIDs Enchantment Module] (minecraft.jar) 
+    UC    endlessids_potion{1.7.1} [EndlessIDs Potion Module] (minecraft.jar) 
+    UC    GTNHLib Core{0.9.44} [GTNHLib Core] (minecraft.jar) 
+    UC    OpenModsCore{0.10.13} [OpenModsCore] (minecraft.jar) 
+    UC    <CoFH ASM>{000} [CoFH ASM] (minecraft.jar) 
+    UC    lanhostskinrefixed{rv1} [Lan Host Skin (Re-)Fix(ed)] (minecraft.jar) 
+    UC    txloader{1.8.10} [TX Loader] (txloader-1.8.10.jar) 
+    UC    unimixins{0.3.0} [UniMixins] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    unimixins-mixin{0.3.0} [UniMixins: Mixin (UniMix)] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    unimixins-compat{0.3.0} [UniMixins: Compatibility] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    mixingasm{0.3} [UniMixins: Mixingasm] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    spongemixins{2.0.1} [UniMixins: SpongeMixins] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    mixinbooterlegacy{1.2.1} [UniMixins: MixinBooterLegacy] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    gtnhmixins{2.2.0} [UniMixins: GTNHMixins] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    mixinextras{0.3.0} [UniMixins: MixinExtras] (+unimixins-all-1.7.10-0.3.0.jar) 
+    UC    asjpatcher{1.6.0.2} [ASJCore] (1.7.10-ASJCore-1.6.0.2.jar) 
+    UC    unicodefix{1.3.2} [Unicode Fix] (1.7.10-unicodefix-1.3.2.jar) 
+    UC    bspkrsCore{6.16} [bspkrsCore] ([1.7.10]bspkrsCore-universal-6.16.jar) 
+    UC    ArmorStatusHUD{1.28} [ArmorStatusHUD] ([1.7.10]ArmorStatusHUD-client-1.28.jar) 
+    UC    vw{1.0.8} [OG Vorpal Enchantment] ([1.7.10]OGVorpalEnchantment-1.0.8.jar) 
+    UC    CoFHCore{1.7.10R3.1.5-revived-1-gff907eb-20241108020521} [CoFH Core] (CoFHCore-mc1.7.10-3.2.0.BE.jar) 
+    UC    Baubles{2.2.14-GTNH} [Baubles] (BaublesExpanded-2.2.14-GTNH.jar) 
+    UC    ThermalFoundation{1.7.10R1.2.6} [Thermal Foundation] ([1.7.10]ThermalFoundation-1.2.6-118.jar) 
+    UC    adjachest{0.9.9.9beta10} [AdjaChest] (adjachest-0.9.9.9beta10.jar) 
+    UC    IC2{2.2.828-experimental} [IndustrialCraft 2] (industrialcraft-2-2.2.828-experimental.jar) 
+    UC    AdvancedSolarPanel{1.7.10-3.5.1} [Advanced Solar Panels] (AdvancedSolarPanel_1.7.10_Edition.jar) 
+    UC    alreadydecoratingfix{1.0a} [Already Decorating Fix] (alreadydecoratingfix-1.0a.jar) 
+    UC    alternative_stained_glass{1.0.3} [Alternative Stained Glass] (AlternativeStainedGlass-mc1.7.10-v1.0.3.jar) 
+    UC    anextratouch{f5bc93b-snapshot} [An Extra Touch] (anextratouch-f5bc93b-snapshot.jar) 
+    UC    AppleCore{3.3.9} [AppleCore] (AppleCore-3.3.9.jar) 
+    UC    gtnhlib{0.9.44} [GTNH Lib] (gtnhlib-0.9.44.jar) 
+    UC    appliedenergistics2{rv3-beta-891-GTNH} [Applied Energistics 2] (appliedenergistics2-rv3-beta-891-GTNH.jar) 
+    UC    aquaacrobatics{0.0.6-1-7-10.44+6fc0f073fd-dirty} [Aqua Acrobatics] (aquaacrobatics-0.0.6-1-7-10.44+6fc0f073fd-dirty.jar) 
+    UC    chunkapi{0.8.2} [ChunkAPI] (chunkapi-mc1.7.10-0.8.2.jar) 
+    UC    archaicfix{0.7.9-main.2+85b33afdd7} [ArchaicFix] (archaicfix-0.7.9-main.2+85b33afdd7.jar) 
+    UC    armoredarms{v1.3.5-1.7.10-release} [Armored Arms] (ArmoredArms-v1.3.5-1.7.10-release.jar) 
+    UC    Mantle{0.5.1} [Mantle] (Mantle-0.5.1.jar) 
+    UC    Natura{2.8.19} [Natura] (Natura-2.8.19.jar) 
+    UC    BiomesOPlenty{2.1.0} [Biomes O' Plenty] (BiomesOPlenty-1.7.10-2.1.0.2308-universal.jar) 
+    UC    ATOP{1.2} [ATOP] (ATOP-1.7.10-v.1.2.jar) 
+    UC    backhand{1.8.8-master.2+63467b56ed-dirty} [Backhand] (backhand-1.8.8-master.2+63467b56ed-dirty.jar) 
+    UC    Backpack{2.6.9-GTNH} [Backpack Edited for ModdedNetwork] (backpack-2.6.9-GTNH.jar) 
+    UC    Baubles|Expanded{2.2.14-GTNH} [Baubles Expanded] (BaublesExpanded-2.2.14-GTNH.jar) 
+    UC    beddium{1.2.4-j8} [Beddium] (beddium-mc1.7.10-1.2.4-j8.jar) 
+    UC    BetterAchievements{0.3.2} [Better Achievements] (BetterAchievements-0.3.2.jar) 
+    UC    bettercrashes{1.4.1-GTNH} [BetterCrashes] (bettercrashes-1.4.1-GTNH.jar) 
+    UC    notfine{0.3.0} [NotFine] (notfine-0.3.0.jar) 
+    UC    BetterFoliage{1.2.4} [Better Foliage - Legacy Edition] (BetterFoliage-LegacyEdition-1.2.4.jar) 
+    UC    BetterHorseHud{1.0} [Better Horse Hud] (BetterHorseHud-1.7.10-1.0.jar) 
+    UC    better_line_break{1.0.1} [Better Line Break] (BetterLineBreak-1.7.10(Forge)-1.0.1.jar) 
+    UC    betterstorage{0.14.0.0} [BetterStorage] (betterstorage-0.14.0.0.jar) 
+    UC    hodgepodge{2.7.134} [Hodgepodge] (hodgepodge-2.7.134.jar) 
+    UC    modularui2{2.3.60-1.7.10} [Modular UI 2] (modularui2-2.3.60-1.7.10.jar) 
+    UC    bogosorter{1.3.27-GTNH} [Inventory Bogo Sorter] (bogosorter-1.3.27-GTNH.jar) 
+    UC    BOPIntegrations{1.6.2-Catized} [BOPIntegrations] (BOPIntegrations-1.6.2-Catized.jar) 
+    UC    BrandonsCore{1.2.1-GTNH} [Brandon's Core] (BrandonsCore-1.2.1-GTNH.jar) 
+    UC    brigadiertreegtnh{1.0.0} [Brigadier Tree GTNH] (brigadier-tree-gtnh-1.0.0.jar) 
+    UC    buddingpolar{0.1.0} [Budding Polar] (buddingpolar-v1.0.7-1.7.10.jar) 
+    UC    VillageNames{4.5.12-GTNH} [Village Names] (VillageNames-4.5.12-GTNH.jar) 
+    UC    bugtorch{1.2.14-master.2+58abd5cdc1-dirty} [BugTorch] (bugtorch-1.2.14-master.2+58abd5cdc1-dirty.jar) 
+    UC    campfirebackport{1.7.10-1.11.3} [Campfire Backport] (campfirebackport-1.7.10-1.11.3+nomixin.jar) 
+    UC    catalogue{1.0.3-1.7.10} [Catalogue] (catalogue-1.0.3-1.7.10.jar) 
+    UC    catculling{1.0.1} [Cat Culling Unofficial] (catculling-V1.0.1.jar) 
+    UC    chiseledbookshelf{1.0} [Chiseled Bookshelf Backport] (chiseledbookshelf-1.0.jar) 
+    UC    chitin{pre-release-1-7-10.1+3e96dd35e5-dirty} [Chitin mod] (chitin-1.7.10-1.0.jar) 
+    UC    chromatictooltips{1.0.23-GTNH} [ChromaticTooltips] (chromatictooltips-1.0.23-GTNH.jar) 
+    UC    chromatictooltipscompat{1.0.28-GTNH} [ChromaticTooltipsCompat] (chromatictooltipscompat-1.0.28-GTNH.jar) 
+    UC    clearmybackground{1.0.4-1.7.10} [Clear My Background] (clearmybackground-1.0.4-1.7.10.jar) 
+    UC    climatecontrol{0.10.0-GTNH} [Climate Control] (ClimateControl-0.10.0-GTNH.jar) 
+    UC    coffeespawner{1.0.2} [Coffee Spawner] (Coffee+Spawner-1.7.10-1.0.2.jar) 
+    UC    colorfulhealthbar{1.0.0} [Colorful Health Bar] (colorfulhealthbar-1.7.10-1.0.0.jar) 
+    UC    controlling{2.1.7} [Controlling] (controlling-2.1.7.jar) 
+    UC    cookingforblockheads{1.4.10-GTNH} [Cooking For Blockheads] (CookingForBlockheads-1.4.10-GTNH.jar) 
+    UC    coretweaks{0.3.4.2-GTNH} [CoreTweaks] (coretweaks-0.3.4.2-GTNH.jar) 
+    UC    cosmeticarmorreworked{1.0.3-GTNH} [CosmeticArmorReworked] (cosmeticarmorreworked-1.0.3-GTNH.jar) 
+    UC    MineTweaker3{3.1.0} [MineTweaker 3] (crafttweaker-mc1.7.10-3.6.3.jar) 
+    UC    cristalinewater{1.5} [Cristaline Water] (cristalinewater-1.5.jar) 
+    UC    defaultworldgenerator{0.4.0} [Default World Generator] (defaultworldgenerator-0.4.0.jar) 
+    UE    dmod{@VERSION@} [DMod] (DMod-2.0.0.jar) 
+    UC    dpi-fix{1.6.0} [DPI-Fix] (DPI-Fix-1.6.0.jar) 
+    UC    ThermalExpansion{1.7.10R4.1.5} [Thermal Expansion] (ThermalExpansion-[1.7.10]4.1.5-248.jar) 
+    UC    DraconicEvolution{1.5.26-GTNH} [Draconic Evolution] (Draconic-Evolution-1.5.26-GTNH.jar) 
+    UC    draconicplus{1.3R} [DraconicMinus-] (DraconicMinus-1.4.jar) 
+    UC    dd{1.11} [Dragon Egg Replicator] (Dragon Egg Replicator mod-1.7.10-1.11.jar) 
+    UC    DragonMounts{1.1.0} [Dragon Mounts] (DragonMounts-1.1.0.jar) 
+    UC    drobiazgi{1.0.0} [Drobiazgi] (drobiazgi-1.0.0.jar) 
+    UC    easyBreeding{2.0.3} [Easy Breeding] (easybreading-1.7.10-2.0.3.jar) 
+    UC    easylan{1.6} [EasyLAN] (EasyLAN_Fix-1.6.jar) 
+    UC    elephantfix{1.0.0} [Elephant Fix] (ElephantFix-Forge-1.7.10-1.0.0-mixinless.jar) 
+    UC    emeraldtools{1.0} [Emerald Tools] (Emerald Tools + Armor-1.1.jar) 
+    UC    endercore{0.5.14} [EnderCore] (endercore-0.5.14.jar) 
+    UC    Waila{2.7.4-master.18+d48bec421a-dirty} [Waila] (wdmla-2.7.4-master.18+d48bec421a-dirty.jar) 
+    UC    EnderIO{2.10.26} [Ender IO] (EnderIO-2.10.26.jar) 
+    UC    enderioaddons{@VERSION@} [EnderIOAddons] (enderioaddons-1.7.10-0.10.16.jar) 
+    UC    HardcoreEnderExpansion{1.12.21-GTNH} [Hardcore Ender Expansion] (HardcoreEnderExpansion-1.12.21-GTNH.jar) 
+    UC    TwilightForest{2.7.30} [The Twilight Forest] (TwilightForest-2.7.30.jar) 
+    UC    etfuturum{2.6.24-GTNH} [Et Futurum Requiem] (etfuturum-2.6.24-GTNH.jar) 
+    UC    Roguelike{1.6.6-GTNH} [Roguelike Dungeons] (roguelike-1.6.6-GTNH.jar) 
+    UC    enderlicious{Enderlicious} [Enderlicious] (enderlicious-1.1.2.jar) 
+    UC    EnderStorage{1.8.2} [EnderStorage] (EnderStorage-1.8.2.jar) 
+    UC    EnderZoo{1.3.3} [Ender Zoo] (EnderZoo-1.3.3.jar) 
+    UC    falsepatternlib{1.11.0} [FalsePatternLib] (falsepatternlib-mc1.7.10-1.11.0.jar) 
+    UC    endlessids{1.7.1} [EndlessIDs] (endlessids-mc1.7.10-1.7.1.jar) 
+    UC    environmentalcreepers{174ef7d} [Environmental Creepers] (environmentalcreepers-174ef7d.jar) 
+    UC    weaponmod{1.24.4} [Balkon's WeaponMod: Legacy] (weaponmod-forge-1.7.10-1.24.4.jar) 
+    UC    exparmory{1.5.1} [Expanded Armory: Legacy] (ExpandedArmory-forge-1.7.10-1.5.1.jar) 
+    UC    expandedbonemeal{1.0.0} [ExpandedBonemeal] (expandedbonemeal-1.7.10-1.0.0.jar) 
+    UC    explosionsrule{0.9.0.0} [Explosions Rule] (explosionsrule-0.9.0.0.jar) 
+    UC    ezstorage{1.7.0} [Simple Storage] (ezstorage-1.7.0.jar) 
+    UC    swansong{1.3.4} [SwanSong] (swansong-mc1.7.10-1.3.4.jar) 
+    UC    falsetweaks{4.4.1} [FalseTweaks] (falsetweaks-mc1.7.10-4.4.1.jar) 
+    UC    fastlangc{1.2-mc1.7.10} [FastLang-C] (fastlangc-1.2-mc1.7.10.jar) 
+    UC    fentlib{0.0.46} [Fentlib] (fentlib-0.0.46.jar) 
+    UC    fether{2.0.5} [Fether] (fether-2.0.5.jar) 
+    UC    floatingitems{1.0} [Floating Items] (floatingitems-1.0.jar) 
+    UC    fluidlogged{0.2.0} [FluidLogged] (fluidlogged-mc1.7.10-0.2.0.jar) 
+    UC    fluxloading{0.0.1} [FluxLoading] (fluxloading-0.0.8.jar) 
+    UC    forgelin{2.4.0-2.2.21} [Forgelin 2] (forgelin-mc1.7.10-2.4.0-2.2.21.jar) 
+    UC    freecam{1.0.8} [Freecam] (freecam-1.0.8.jar) 
+    UC    gaiablossom{1.0.2-main.20+a8882a1b1d-dirty} [GaiaTweaks] (gaiablossom-1.0.4.1.jar) 
+    UC    ImmersiveEngineering{0.7.10-JB} [Immersive Engineering] (ImmersiveEngineering-0.7.10-JB.jar) 
+    UC    gardencloche{1.0} [gardencloche] (GardenClocheBackport-1.0.2.jar) 
+    UC    GlobalGameRules{{}} [Global GameRules] (GlobalGameRules-1.0.jar) 
+    UC    GolemTweaks{1.3.4} [Golem Tweaks] (GolemTweaks-1.7.10-1.3.4.jar) 
+    UC    hammerz{0.1.7.37} [Hammerz] (Hammerz-1.7.10-0.1.7.37.jar) 
+    UC    Harvest{1.7.10-1.0.0-2} [Harvest] (Harvest-1.7.10-1.0.0-2.jar) 
+    UC    harvestcraft{1.3.2-GTNH} [Pam's HarvestCraft] (harvestcraft-1.3.2-GTNH.jar) 
+    UC    HelpFixer{1.3.0} [HelpFixer] (HelpFixer-1.3.0.jar) 
+    UC    ie1710neipatch{0.1.1} [IE1710NEIPatch] (ie1710neipatch-0.1.1.jar) 
+    UC    immersivesnow{1.0b} [Immersive Snow] (immersive-snow-1.7.10-1.0b.jar) 
+    UC    immersiveintegration{0.6.8} [Immersive Integration] (immersiveintegration-0.6.8.jar) 
+    UC    immersivethunder{1.3.0-1.7.10} [Immersive Thunder] (immersivethunder-forge-1.7.10-1.3.0.jar) 
+    UC    incommand{1.11.7.1} [InCommand] (incommand-1.11.7.1.jar) 
+    UC    ingameime{1.7.10-1.0.0-RC3} [IngameIME] (ingameime-1.7.10-1.0.0-RC3.jar) 
+    UC    IronChest{6.1.11} [Iron Chests] (IronChest-6.1.11.jar) 
+    UC    itemphysic{1.3.1 kotmatross edition} [ItemPhysic] (itemphysic-1.3.1.jar) 
+    UC    JABBA{1.5.18} [JABBA] (JABBA-1.5.18.jar) 
+    UC    journeymap{5.2.14} [JourneyMap] (journeymap-1.7.10-5.2.14-unlimited.jar) 
+    UC    legacyfixes{2.4.0} [LegacyFixes] (legacyfixes-2.4.0.jar) 
+    UC    legacyfontprovider{1.1.2} [Legacy Font Provider] (legacyfontprovider-1.1.2.jar) 
+    UC    linearxp{1.0.4} [LinearXP] (LinearXP-1.7.10-1.0.4.jar) 
+    UC    lumi{1.2.1} [Lumi] (lumi-mc1.7.10-1.2.1.jar) 
+    UC    lumis_lots{@VERSION@} [Lumi's Lots] (Lumis-Lots-1.7.0.jar) 
+    UC    matmos{1.7.10-36.0.1} [MAtmos] (matmos-1.7.10-36.0.1+nomixin.jar) 
+    UC    mcpatcher{0.3.0} [Right Proper MCPatcher] (mcpatcher-mc1.7.10-0.3.0.jar) 
+    UC    ForgeMultipart{1.7.6} [Forge Multipart] (ForgeMultipart-1.7.6.jar) 
+    UC    Mekanism{9.10.48} [Mekanism Community Edition] (Mekanism-Community-Edition-1.7.10-9.10.48-ALL.jar) 
+    UC    MekanismGenerators{9.10.48} [MekanismGenerators Community Edition] (Mekanism-Community-Edition-1.7.10-9.10.48-ALL.jar) 
+    UC    MekanismTools{9.10.48} [MekanismTools Community Edition] (Mekanism-Community-Edition-1.7.10-9.10.48-ALL.jar) 
+    UC    MetallurgyCore{4.0.5} [Metallurgy Core] (MetallurgyCore-1.7.10-4.0.5.30.jar) 
+    UC    Metallurgy{4.0.9} [Metallurgy 4] (Metallurgy-1.7.10-4.0.9.148.jar) 
+    UC    microhud{@VERSION@} [MicroHUD] (MicroHUD-1.3.3.jar) 
+    UC    mixinconbooter{1.3} [MixinConBooter-Legacy] (mixinconbooter-legacy-1.3.jar) 
+    UC    mobsinfo{0.5.14-GTNH} [MobsInfo] (mobsinfo-0.5.14-GTNH.jar) 
+    UC    createworldui{4.2.0} [ModernCreateWorldUI] (ModernCreateWorldUI-4.2.0.jar) 
+    UC    difficultylocker{1.0.3} [ModernDifficultyLocker] (ModernDifficultyLocker-1.0.3.jar) 
+    UC    modernresourceselectui{0.1.1} [ModernResourcePackUI] (ModernResourcePackSelectingUI-0.1.1.jar) 
+    UC    modernsplash{@VERSION@} [ModernSplash] (modernsplash-1.0.jar) 
+    UC    modtweaker2{1.1.3} [Mod Tweaker 2] (modtweaker2-mc1.7.10-1.1.3.jar) 
+    UC    MoreEnchants{1.4.0} [MoreEnchants] (MoreEnchants-1.4.0.jar) 
+    UC    MoreFurnaces{1.3.9} [More Furnaces] (MoreFurnaces-1.3.9-MC1.7.10.jar) 
+    UC    moremobvariants{1.0} [Enhanced Mob Variants] (moremobvariants-1.7.10-1.1.0.jar) 
+    UC    nech{v0.1.4} [NeverEnoughCharacters-Rework] (nech-v0.1.4.jar) 
+    UC    neirecipehandlers{1.1.0-BETA} [NEI Recipe Handlers] (neiRecipeHandlers-1.1.0-BETA.jar) 
+    UC    neohunger{NO-GIT-TAG-SET} [NeoHunger] (neohunger-1.0.jar) 
+    UC    netherlicious{3.2.8} [Netherlicious] (netherlicious-3.2.8.jar) 
+    UC    netherportalfix{1.3.0} [Nether Portal Fix] (netherportalfix-1.3.0.jar) 
+    UC    neutron{0.1.1} [Neutron] (Neutron-Forge-1.7.10-0.1.1-hotfix.jar) 
+    UC    nmsot{1.2.0-mc1.7.10} [No Mob Spawning on Trees] (NoMobSpawningOnTrees-1.2.0-mc1.7.10.jar) 
+    UC    recipehandler{1.7.10} [NoMoreRecipeConflict] (NoMoreRecipeConflict-1.7.10-0.3.2.jar) 
+    UC    deathsoundfx{1.0} [Nostalgic Death Sound] (Nostalgic Death Sound 1.0.jar) 
+    UC    ae2wct{1.12.11} [AE2 Wireless Crafting Terminal] (WirelessCraftingTerminal-1.12.11.jar) 
+    UC    neenergistics{1.7.29} [NotEnoughEnergistics] (NotEnoughEnergistics-1.7.29.jar) 
+    UC    notenoughpets{2.4.1} [Not Enough Pets] (NotEnoughPets-1.7.10-2.4.1.jar) 
+    UC    mcpatcherforge{1.1.0-alpha} [MCPatcherForge] (notfine-0.3.0.jar) 
+    UC    olderpingdisplay{1.0.4} [Older Ping Display] (olderpingdisplay-1.0.4.jar) 
+    UC    OpenMods{0.10.13} [OpenMods] (OpenModsLibs-0.10.13.jar) 
+    UC    OpenBlocks{1.12.12-GTNH} [OpenBlocks] (OpenBlocks-1.12.12-GTNH.jar) 
+    UC    overloadedarmorbar{1.1.1} [Overloaded Armor Bar] (overloadedarmorbar-1.1.1.jar) 
+    UC    qz_miner{5.0.8} [Qz Miner] (qz_miner-5.0.8.jar) 
+    UC    RandomThings{2.7.5} [RandomThings] (RandomThings-2.7.5.jar) 
+    UC    rawinput{1.8.0} [Raw Input - Blessed Edition] (rawinput-1.8.0.jar) 
+    UC    kingdomregions{5.0} [Kingdom | Regions] (Regions-6.0.jar) 
+    UC    riftflux{2.0} [RiftFlux] (RiftFlux-1.2.2.jar) 
+    UC    ringsofdistance{1.0.2} [Rings of distance] (ringsofdistance-1.0.2.jar) 
+    UC    RTG{1.2.0-GTNH} [Realistic Terrain Generation] (RTG-1.2.0-GTNH.jar) 
+    UC    shaderfixer{5.3} [Shader Fixer] (shaderfixer-5.3.jar) 
+    UC    screenshotsmod{1.0} [screenshotsmod] (Simple Screenshot Viewer.jar) 
+    UC    simpleskinbackport{1.0.1-GTNH} [SimpleSkinBackport] (simpleskinbackport-1.0.1-GTNH.jar) 
+    UC    sleepingbag{0.3.1} [Sleeping Bag] (sleepingbag-0.3.1.jar) 
+    UC    smartparticles{1.7.10} [Smart Particles] (smart_particles+mc1.7.10-7.10.9a-Forge.jar) 
+    UC    mymod{1.0} [Smooth Mouse] (smoothmouse-1.0.jar) 
+    UC    soundphysics{692aa7c-odl1-fixes-1+692aa7cae2-dirty} [Sound-Physics] (soundphysics-692aa7c-odl1-fixes-1+692aa7cae2-dirty.jar) 
+    UC    squidnoglitch{1.0.0} [SquidNoGlitch] (squidnoglitch-mc1.7.10-1.0.0.jar) 
+    UC    StorageDrawers{2.2.20-GTNH} [Storage Drawers] (StorageDrawers-2.2.20-GTNH.jar) 
+    UC    StorageDrawersBop{2.2.20-GTNH} [Storage Drawers: Biomes O' Plenty Pack] (StorageDrawers-2.2.20-GTNH.jar) 
+    UC    StorageDrawersErebus{2.2.20-GTNH} [Storage Drawers: Erebus Pack Pack] (StorageDrawers-2.2.20-GTNH.jar) 
+    UC    StorageDrawersForestry{2.2.20-GTNH} [Storage Drawers: Forestry Pack] (StorageDrawers-2.2.20-GTNH.jar) 
+    UC    StorageDrawersMisc{2.2.20-GTNH} [Storage Drawers: Misc Pack] (StorageDrawers-2.2.20-GTNH.jar) 
+    UC    StorageDrawersNatura{2.2.20-GTNH} [Storage Drawers: Natura Pack] (StorageDrawers-2.2.20-GTNH.jar) 
+    UC    tabfaces{1.0.15} [TabFaces] (tabfaces-1.0.15.jar) 
+    UC    targaseule{1.7.10-1.P73145.8} [TargaSeule] (targaseule-1.7.10-1.P73145.8.jar) 
+    UC    tebreaker{1.2.1} [Tile Entity Breaker] (tebreaker-1.2.1.jar) 
+    UC    teconflictfixer{1.0.0} [TEConflictFixer] (teconflictfixer-1.0.0.jar) 
+    UC    teresetfix{1.0.1-noreq} [TileEntity Reset Fix] (TileEntityResetFix-1.0.1-noreq.jar) 
+    UC    TimeVial{1.0.2} [Time Vial] (TimeVial-1.0.2.jar) 
+    UC    trumpetskeleton{1.7.10-0.1} [Trumpet Skeleton Backdooted] (trumpetskeleton-1.7.10-0.2121beta.jar) 
+    UC    tumbleweed{1.7.10-0.3} [Tumbleweed Wasteland] (tumbleweed-1.7.10-0.3.jar) 
+    UC    tweakimo{1.4.2} [Tweakimo] (Tweakimo-1.7.10.jar) 
+    UC    ultimatecavesmod{1.0.6} [Ultimate Caves Mod] (ultimatecavesmod-1.0.6.jar) 
+    UC    ue{0.1.0} [Uncapped Enchants] (UncappedEnchants-0.1.1.jar) 
+    UC    underphangables{1.0.2} [Underp Hangables] (underphangables-1.0.2.jar) 
+    UC    uuidoffline{1.0} [UUIDOffline] (uuidoffline-1.0.jar) 
+    UC    vintagedamageindicators{0.9.3} [Vintage Damage Indicators] (vintagedamageindicators-0.9.3.jar) 
+    UC    waystones{1.0.12} [Waystones-X] (waystones-1.0.12.jar) 
+    UC    wdmla{2.7.4-master.18+d48bec421a-dirty} [WDMla] (wdmla-2.7.4-master.18+d48bec421a-dirty.jar) 
+    UC    wildnetherwart{2.1} [Wild Netherwart] (wild_netherwart-1.7.10-v2.1.jar) 
+    UC    zume{1.2.2} [Zume] (zume-1.2.2.jar) 
+    UC    ForgeMicroblock{1.7.6} [Forge Microblocks] (ForgeMultipart-1.7.6.jar) 
+    UC    McMultipart{1.7.6} [Minecraft Multipart Plugin] (ForgeMultipart-1.7.6.jar) 
+    GL info: ' Vendor: 'NVIDIA Corporation' Version: '4.6.0 NVIDIA 595.79' Renderer: 'NVIDIA GeForce RTX 3060 Laptop GPU/PCIe/SSE2'
+    OpenModsLib class transformers: [stencil_patches:FINISHED],[movement_callback:FINISHED],[player_damage_hook:FINISHED],[map_gen_fix:ENABLED],[gl_capabilities_hook:FINISHED],[player_render_hook:ENABLED]
+    Class transformer null safety: all safe
+    CoFHCore: Lacking version information.
+    ThermalFoundation: -[1.7.10]1.2.6-118
+    AE2 Version: rv3-beta-891-GTNH for Forge 10.13.4.1614
+    Mantle Environment: Environment healthy.
+    CPU Threads: 16
+    ThermalExpansion: -[1.7.10]4.1.5-248
+    Mixins in Stacktrace: 
+        cpw.mods.fml.common.LoadController:
+            mixin.mixinbooterlegacy.json:LoadControllerMixin from mod (unknown)
+            mixins.gtnhmixins.json:LateMixinOrchestrationMixin from mod (unknown)
+        net.minecraft.client.Minecraft:
+            mixins.riftflux.early.json:early.MixinMinecraft_SaveBeforeWindowClose from mod riftflux
+            mixins.bettercrashes.early.json:MinecraftMixin from mod bettercrashes
+            mixins.microhud.json:access.MinecraftAccessor from mod microhud
+            mixins.modernsplash.early.json:MinecraftMixin from mod modernsplash
+            mixins.hodgepodge.early.json:minecraft.profiler.MinecraftMixin from mod hodgepodge
+            mixins.clearmybackground.early.json:MinecraftMixin from mod clearmybackground
+            mixins.hodgepodge.early.json:minecraft.MixinMinecraft_FastBlockPlacing from mod hodgepodge
+            mixins.hodgepodge.early.json:minecraft.MixinMinecraft_ResizableFullscreen from mod hodgepodge
+            mixins.hodgepodge.early.json:minecraft.MixinMinecraft_FixDuplicateSounds from mod hodgepodge
+            mixins.tebreaker.early.json:MixinMinecraft from mod tebreaker
+            mixins.swansong.early.json:client.debug.MinecraftMixin from mod swansong
+            mixins.hodgepodge.early.json:minecraft.MixinMinecraft_UpdateKeys from mod hodgepodge
+            mixins.fentlib.early.json:minecraft.MixinMinecraftGuiOpenLogger from mod fentlib
+            mixins.bogosorter.early.json:minecraft.MinecraftMixin from mod bogosorter
+            mixins.gtnhlib.early.json:MixinMinecraft_PickBlockTrap from mod gtnhlib
+            mixins.lumi.json:client.MinecraftMixin from mod lumi
+            mixins.backhand.early.json:minecraft.MixinMinecraft from mod backhand
+            mixins.swansong.early.json:client.hooks.MinecraftMixin from mod swansong
+            mixins.swansong.early.json:client.compat.mc.IncreasedMaxTextureSize.MinecraftMixin from mod swansong
+            tweakimo.mixin.json:reconnectbutton.MinecraftMixin from mod tweakimo
+            mixins.anextratouch.early.json:minecraft.MixinMinecraft from mod anextratouch
+            mixins.ingameime.early.json:MixinMinecraft from mod ingameime
+            mixins.hodgepodge.early.json:minecraft.MixinMinecraft_ClearStaleLoadingScreenInput from mod hodgepodge
+            mixins.riftflux.early.json:early.vortex.MixinMinecraft_ToolbeltFocus from mod riftflux
+            mixins.beddium.early.json:client.TerrainRendering.MinecraftMixin from mod beddium
+            mixins.hodgepodge.early.json:minecraft.MixinMinecraft_ToggleDebugMessage from mod hodgepodge
+            mixins.legacyfontprovider.json:MinecraftMixin from mod legacyfontprovider
+            mixins.notfine.early.json:mcpatcherforge.base.MixinMinecraft from mod notfine
+            mixins.modularui2.early.json:minecraft.MinecraftMixin from mod modularui2
+            mixins.freecam.early.json:minecraft.MixinMinecraft from mod freecam
+            mixins.fluxloading.json:MixinMinecraft from mod fluxloading
+            mixins.shaderfixer.early.json:minecraft.fpsbypass.MixinMinecraft from mod shaderfixer
+            mixins.qz_miner.json:client.MixinMinecraft from mod qz_miner
+            mixins.archaicfix.early.json:client.core.MixinMinecraft from mod archaicfix
+            mixins.hodgepodge.early.json:memory.MixinMinecraft_ShutdownHook from mod hodgepodge
+            mixins.riftflux.early.json:early.MixinMinecraft_IsometricPhotoMode from mod riftflux
+            mixins.swansong.early.json:client.screenshot.MinecraftMixin from mod swansong
+        cpw.mods.fml.client.FMLClientHandler:
+            mixins.hodgepodge.early.json:memory.MixinFMLClientHandler from mod hodgepodge
+            mixins.hodgepodge.early.json:fml.MixinFMLClientHandler from mod hodgepodge
+            mixins.modernsplash.early.json:FMLClientHandlerMixin from mod modernsplash
+            mixins.archaicfix.early.json:client.core.MixinFMLClientHandler from mod archaicfix
+            mixins.fluxloading.json:FMLClientHandlerMixin from mod fluxloading
+            mixins.hodgepodge.early.json:minecraft.shutup.MixinFMLClientHandler from mod hodgepodge
+            mixins.fentlib.early.json:minecraft.FeatureExtraPingData$MixinFMLClientHandler from mod fentlib
+    Suspected Mods: DMod (dmod)
+    Launched Version: 1.7.10-10.13.4.1614-1.7.10
+    LWJGL: 2.9.1
+    OpenGL: NVIDIA GeForce RTX 3060 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 595.79, NVIDIA Corporation
+    GL Caps: Using GL 1.3 multitexturing.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Anisotropic filtering is supported and maximum anisotropy is 16.
+Shaders are available because OpenGL 2.1 is supported.
+
+    Is Modded: Definitely; Client brand changed to 'fml,forge'
+    Type: Client (map_client.txt)
+    Resource Packs: [mat_zen-35-1.2.2.zip, Simple_Click_Universal.zip, Alternative Stained Glass Connect mc1.7.10-v1.0.0.zip, [1.7.10]MC-New-Textrues-Mod Addon[2.1.0].zip, [1.7.10]MC-New-Textrues-Mod Addon[v2.1.1].zip, Modernity-f1-3.10.2.zip, cherry panorama-1.7.10.zip, ModernityAdjunct-f1-1.6.zip, ModernityAdjunct_Addon_f1.zip, Modernity-GTNH-v1.5.5.zip, §6HUD§0-§eRefined§0.zip, Waystones Modernity Textures, MCNT - CrWUI Compactibility.zip, Authentic Shadows_1.7.zip, black-tooltips-icon.zip]
+    Current Language: 简体中文 (中国)
+    Profiler Position: N/A (disabled)
+    Vec3 Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+    Anisotropic Filtering: Off (1)

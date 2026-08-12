@@ -2,6 +2,7 @@ package makamys.dmod.future.entity;
 
 import makamys.dmod.future.entity.passive.EntityAnimalFuture;
 import makamys.dmod.future.item.ItemStackFuture;
+import makamys.dmod.mixin.AccessorItemFood;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -34,9 +35,12 @@ public class EntityLivingFuture {
         Item item = stack.getItem();
         if (item instanceof ItemFood) {
             ItemFood food = (ItemFood)item;
-            if (!world.isRemote && food.potionId > 0 && world.rand.nextFloat() < food.potionEffectProbability)
+            // Access the private potion fields through the mixin accessor (replaces dmod_at.cfg entries).
+            // 通过 mixin accessor 访问私有药水字段（替代 dmod_at.cfg 条目）。
+            AccessorItemFood foodAccessor = (AccessorItemFood)food;
+            if (!world.isRemote && foodAccessor.getPotionId() > 0 && world.rand.nextFloat() < foodAccessor.getPotionEffectProbability())
             {
-                dis.addPotionEffect(new PotionEffect(food.potionId, food.potionDuration * 20, food.potionAmplifier));
+                dis.addPotionEffect(new PotionEffect(foodAccessor.getPotionId(), foodAccessor.getPotionDuration() * 20, foodAccessor.getPotionAmplifier()));
             }
         }
 

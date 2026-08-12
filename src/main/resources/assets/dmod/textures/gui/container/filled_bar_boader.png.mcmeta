@@ -1,0 +1,15 @@
+{
+    "stretching": {
+        "type": "nine_patch",
+        "default": {
+            "width": 14,
+            "height": 14
+        },
+        "edge": {
+            "top": 4,
+            "bottom": 4,
+            "left": 4,
+            "right": 4
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "dmod:bundle/has_selected_item",
+    "on_false": { "type": "minecraft:model", "model": "dmod:item/bundle" },
+    "on_true": {
+      "type": "minecraft:composite",
+      "models": [
+        { "type": "minecraft:model", "model": "dmod:item/bundle_open_back" },
+        { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+        { "type": "minecraft:model", "model": "dmod:item/bundle_open_front" }
+      ]
+    }
+  }
+}

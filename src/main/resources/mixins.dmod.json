@@ -1,0 +1,20 @@
+{
+    "required": true,
+    "minVersion": "0.6",
+    "package": "makamys.dmod.mixin",
+    "refmap": "mixins.dmod.refmap.json",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+    	"AccessorBlock",
+    	"AccessorEntityAIMate",
+    	"AccessorEntityAITarget",
+    	"AccessorEntityAINearestAttackableTarget",
+    	"AccessorItemFood",
+    	"MixinEntityLiving",
+    	"MixinEntityWolf",
+    	"MixinEntityLivingBase",
+    	"MixinContainer",
+    	"MixinRenderItem"
+    ],
+    "plugin": "makamys.dmod.MixinConfigPlugin"
+}

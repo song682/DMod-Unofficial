@@ -1,35 +1,28 @@
-# mac os
-.DS_Store
-
-# forge / gradle
-.gradle
-build/
-out/
-classes/
-run/
-
-# eclipse 
+# eclipse
+bin
 *.launch
 .settings
+.metadata
 .classpath
 .project
-.metadata
-eclipse
-*.launch
 
 # idea
-.idea/
-*.iml
+out
 *.ipr
 *.iws
+*.iml
+.idea
+idea
 
-# vscode
-.settings/
-.vscode/
-bin/
-.classpath
+# gradle
+build
+.gradle
 
-# other
-bin/
-jars/
-/.nb-gradle/
+# minecraft
+minecraft
+eclipse
+run
+
+# Files from Forge MDK
+forge*changelog.txt
+/temps/

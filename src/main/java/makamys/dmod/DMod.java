@@ -19,7 +19,12 @@ import makamys.mclib.core.MCLib;
 import makamys.mclib.core.MCLibModules;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid = MODID, version = VERSION, dependencies = "required-after:dfdvdsfsAPI")
+@Mod(
+        modid = MODID,
+        version = VERSION,
+        name = "DMod",
+        dependencies = "required-after:catframe@[0.6.0,);after:etfuturm@[2.6.2,)"
+)
 public class DMod
 {   
     @Instance(MODID)
