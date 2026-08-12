@@ -181,32 +181,6 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
         return true;
     }
 
-    /**
-     * 尝试对指定槽位中的收纳袋执行滚轮切换：槽位悬停着收纳袋且滚轮增量非零时
-     * 切换选中索引并标记槽位变更。返回是否发生了切换，供事件拦截方决定是否吞掉
-     * 该滚轮事件——避免 NEI 翻页、快捷栏切换等其它消费者同时响应，造成
-     * "滚动袋子时其它区域跟着滚动"的副作用。
-     * <p>Try to wheel-scroll a bundle in the given slot: when a bundle is hovered
-     * in the slot and the wheel delta is non-zero, cycles the selected index and
-     * marks the slot changed. Returns whether a switch happened, so event
-     * interceptors can swallow the wheel event and keep other consumers (NEI
-     * paging, hotbar switching, ...) from reacting to it.
-     */
-    public static boolean tryScrollSlot(Slot slot, int dWheel) {
-        if (slot == null || dWheel == 0) {
-            return false;
-        }
-        ItemStack stack = slot.getStack();
-        if (stack == null || !(stack.getItem() instanceof BundleItem)) {
-            return false;
-        }
-        if (scrollSelectedIndex(stack, dWheel)) {
-            slot.onSlotChanged();
-            return true;
-        }
-        return false;
-    }
-
     // ==================== 耐久条（现代风格，经典同步升级） ====================
 
     @Override
