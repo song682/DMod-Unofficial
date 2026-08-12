@@ -28,7 +28,9 @@ import net.minecraft.util.ResourceLocation;
  * Layout rules follow the vanilla Bundle spec:
  * <ul>
  *   <li>Stacks are drawn right-to-left, top-to-bottom. The most recently inserted stack
- *       lives at the top-right slot and is rendered with a highlight.</li>
+ *       lives at the top-right slot. The highlighted slot follows the bundle's selected
+ *       index ({@code Sel}): when a selection exists the selected stack is highlighted,
+ *       otherwise the top-right (newest) stack keeps the highlight.</li>
  *   <li>When {@code n <= 12}, every stack is shown. Otherwise we show
  *       {@code 11 - ((4 - (n mod 4)) mod 4)} stacks, reserving the bottom-right cell
  *       for a {@code "+N"} overflow counter so the last row is always full.</li>
@@ -86,9 +88,19 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
     private final int rows;
     private final boolean isEmpty;
 
-    public BundleTooltipRenderer(List<ItemStack> stacks, int occupancy) {
+    /**
+     * 袋子本体引用：draw 时实时读取 {@code Sel}，滚轮切换后高亮即时跟随，不依赖
+     * tooltip handler 的重新构建时机。
+     * <p>The bundle stack itself: {@code Sel} is read live in draw(), so the
+     * highlight follows wheel switches immediately, independent of when the
+     * tooltip handler is rebuilt.
+     */
+    private final ItemStack bundleStack;
+
+    public BundleTooltipRenderer(List<ItemStack> stacks, int occupancy, ItemStack bundleStack) {
         this.inventory = stacks;
         this.occupancy = occupancy;
+        this.bundleStack = bundleStack;
         this.isEmpty = stacks.isEmpty();
 
         int n = stacks.size();
@@ -157,6 +169,12 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
         int cells = displayCount + (overflow > 0 ? 1 : 0);
         int totalCells = rows * COLUMNS;
         FontRenderer fr = GuiDraw.fontRenderer;
+        // 高亮跟随选中索引（Sel）：已选中时高亮选中格子；未选中时保持右上角
+        // （最新插入）高亮。选中项被折叠到显示区外时自然不出现高亮。
+        // Highlight follows the selected index (Sel); without a selection the
+        // top-right (newest) slot stays highlighted. A selection folded out of
+        // the visible grid simply shows no highlight.
+        int selected = BundleContents.getSelectedIndex(bundleStack);
 
         for (int i = 0; i < totalCells; i++) {
             // i=0 is the top-right cell (the most recently inserted stack).
@@ -165,8 +183,13 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
             int sx = x + col * SLOT_W;
             int sy = y + row * SLOT_H;
 
-            boolean isTopStack = i == 0 && displayCount > 0;
-            drawAuto(isTopStack ? TEX_SLOT_HIGHLIGHTED : TEX_SLOT,
+            boolean highlighted;
+            if (selected >= 0 && selected < inventory.size()) {
+                highlighted = i == selected;
+            } else {
+                highlighted = i == 0 && displayCount > 0;
+            }
+            drawAuto(highlighted ? TEX_SLOT_HIGHLIGHTED : TEX_SLOT,
                     sx, sy, SLOT_W, SLOT_H,
                     TextureStretching.StretchType.STATIC, SLOT_W, SLOT_H, 0, 0, 0, 0);
 

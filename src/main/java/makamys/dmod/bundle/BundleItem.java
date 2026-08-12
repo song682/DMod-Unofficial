@@ -262,7 +262,7 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
     @Override
     public List<ITooltipLineHandler> getTooltipHandlers(ItemStack stack) {
         List<ItemStack> stacks = BundleContents.getBundledStacks(stack).collect(Collectors.toList());
-        return Arrays.asList(new BundleTooltipRenderer(stacks, BundleContents.getOccupancy(stack)));
+        return Arrays.asList(new BundleTooltipRenderer(stacks, BundleContents.getOccupancy(stack), stack));
     }
 
     @SideOnly(Side.CLIENT)
