@@ -15,7 +15,7 @@
     	"MixinEntityWolf",
     	"MixinEntityLivingBase",
     	"MixinContainer",
-    	"MixinGuiScreen",
+    	"MixinMinecraft",
     	"MixinRenderItem"
     ],
     "plugin": "makamys.dmod.MixinConfigPlugin"
