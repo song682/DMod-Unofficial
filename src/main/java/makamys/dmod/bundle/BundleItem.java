@@ -50,7 +50,13 @@ import org.lwjgl.input.Mouse;
  *   <li>{@code dmod:bundle/color} — 16 色分派（仅染色变体）</li>
  *   <li>{@code dmod:bundle/has_selected_item} — 是否处于打开状态（需已用滚轮选中
  *       且光标当前正悬停在本袋上；光标移开立即闭合并清除选择，见
- *       {@link #isBundleOpen(ItemStack)}）</li>
+ *       {@link #isBundleOpen(ItemStack)}）。决策树中该开启分支被
+ *       {@code minecraft:display_context} 的 select 节点包裹，仅当渲染上下文为
+ *       {@code ITEM_GUI} 时求值——手持/落地/展示框等其它上下文恒为闭合外观。
+ *       (The open branch in the decision trees is wrapped by a
+ *       {@code minecraft:display_context} select and only evaluated when the
+ *       render context is {@code ITEM_GUI}; every other context always renders
+ *       the closed look.)</li>
  *   <li>{@code dmod:bundle/selected_item} — 选中索引（滚轮选择写入）</li>
  * </ul>
  * 交互（onStackClicked / onClicked / onItemRightClick）与耐久条逻辑委托
