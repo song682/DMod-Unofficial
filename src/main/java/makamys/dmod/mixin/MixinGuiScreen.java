@@ -21,19 +21,27 @@ public class MixinGuiScreen {
      * （滚轮切快捷栏仅在世界内生效），且 drawScreen 每帧刷新 theSlot（悬停格子）。
      * 切换后调用
      * slot.onSlotChanged()，由 Container.detectAndSendChanges 将 NBT 同步到服务端。
+     * 同时每次鼠标事件（含移动）都会先清除已离开悬停的袋子选择（Sel 仅在悬停期间
+     * 有效，见 BundleItem.clearSelectionIfNotHovered）。
      * <p>Scroll wheel on a bundle slot cycles the selected index (the item shown at
      * the bundle mouth when open). Injected at RETURN of GuiScreen#handleMouseInput:
      * vanilla 1.7.10 has no wheel handling in container GUIs (the wheel switches the
      * hotbar only while no screen is open), and drawScreen refreshes theSlot (the
      * hovered slot) every frame. The NBT change is propagated to the server via
      * slot.onSlotChanged()
-     * + Container.detectAndSendChanges.
+     * + Container.detectAndSendChanges. Every mouse event (movement included)
+     * also clears the selection of bundles the cursor has left (Sel is only
+     * valid while hovering, see BundleItem.clearSelectionIfNotHovered).
      */
     @Inject(method = "handleMouseInput", at = @At("RETURN"))
     private void dmod$scrollBundleSelection(CallbackInfo ci) {
         if (!((Object) this instanceof GuiContainer)) {
             return;
         }
+        // Sel 仅在悬停期间有效：光标离开袋子槽位立即清除选择（下次悬停从头开始）。
+        // Sel is only valid while hovering: clear it as soon as the cursor
+        // leaves the bundle slot (the next hover starts from scratch).
+        BundleItem.clearSelectionIfNotHovered((GuiContainer) (Object) this);
         int dWheel = Mouse.getEventDWheel();
         if (dWheel == 0) {
             return;

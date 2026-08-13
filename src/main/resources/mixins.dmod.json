@@ -15,6 +15,7 @@
     	"MixinEntityWolf",
     	"MixinEntityLivingBase",
     	"MixinContainer",
+    	"MixinGuiContainer",
     	"MixinGuiScreen",
     	"MixinRenderItem"
     ],

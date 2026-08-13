@@ -24,4 +24,20 @@ public interface AccessorGuiContainer {
      */
     @Accessor("theSlot")
     Slot getHoveredSlot();
+
+    /**
+     * Returns the GUI's left origin in screen pixels.
+     * <p>
+     * 返回界面左上角的屏幕横坐标。
+     */
+    @Accessor("guiLeft")
+    int getGuiLeft();
+
+    /**
+     * Returns the GUI's top origin in screen pixels.
+     * <p>
+     * 返回界面左上角的屏幕纵坐标。
+     */
+    @Accessor("guiTop")
+    int getGuiTop();
 }

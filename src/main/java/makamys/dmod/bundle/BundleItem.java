@@ -20,7 +20,10 @@ import makamys.dmod.future.inventory.SlotFuture;
 import makamys.dmod.future.item.ItemFuture;
 import makamys.dmod.future.item.ItemStackFuture;
 import makamys.dmod.item.IConfigurable;
+import makamys.dmod.mixin.AccessorGuiContainer;
 import makamys.dmod.util.StatRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +33,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import org.lwjgl.input.Mouse;
 
 /**
  * 统一的收纳袋物品类 —— 替换旧的 {@code ItemBundle}（经典）与 {@code ItemModernBundle}
@@ -43,8 +48,9 @@ import net.minecraft.world.World;
  * {@link #getPropertyDefinitions()} 声明，由 CatFrame 发现阶段自动注册：
  * <ul>
  *   <li>{@code dmod:bundle/color} — 16 色分派（仅染色变体）</li>
- *   <li>{@code dmod:bundle/has_selected_item} — 是否已选中物品（完成时态：
- *       只有显式写过 {@code "Sel"} 才算选中；false=闭合、true=打开）</li>
+ *   <li>{@code dmod:bundle/has_selected_item} — 是否处于打开状态（需已用滚轮选中
+ *       且光标当前正悬停在本袋上；光标移开立即闭合并清除选择，见
+ *       {@link #isBundleOpen(ItemStack)}）</li>
  *   <li>{@code dmod:bundle/selected_item} — 选中索引（滚轮选择写入）</li>
  * </ul>
  * 交互（onStackClicked / onClicked / onItemRightClick）与耐久条逻辑委托
@@ -87,9 +93,143 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
         if (colored) {
             props.put("dmod:bundle/color", (stack, phase) -> stack != null ? (stack.getItemDamage() & 0xF) : 0);
         }
-        props.put("dmod:bundle/has_selected_item", (stack, phase) -> BundleContents.getSelectedIndex(stack) >= 0);
+        props.put("dmod:bundle/has_selected_item", (stack, phase) -> isBundleOpen(stack));
         props.put("dmod:bundle/selected_item", (stack, phase) -> BundleContents.getSelectedIndex(stack));
         return props;
+    }
+
+    /**
+     * 打开状态判定：仅当已用滚轮选中物品（{@code Sel} 存在）且鼠标当前正悬停在
+     * 本袋所在的槽位上时返回 true。悬停检测采用几何命中（鼠标坐标 vs 槽位矩形，
+     * 与原版 {@code isMouseOverSlot} 同区间），不依赖 {@code theSlot} 字段——
+     * 诊断发现创造模式 + NEI 环境下属性求值时 {@code theSlot} 会为 null，而滚轮
+     * 写入时它又非空，字段读取时机不可靠。光标移开后立即闭合并清除选择（见
+     * {@link #clearSelectionIfNotHovered}），再次悬停从头开始，不保留上次选中；
+     * 右键取出会同样清除 {@code Sel}。仅客户端渲染时调用。
+     * <p>Open-state check: true only when an entry is selected ({@code Sel}
+     * present) AND the cursor is currently over the slot holding this exact
+     * stack. Hover detection is geometric (mouse position vs slot rectangle,
+     * same bounds as vanilla {@code isMouseOverSlot}) rather than reading the
+     * {@code theSlot} field — diagnostics showed theSlot is null at property
+     * evaluation time in creative-mode + NEI environments while being non-null
+     * during the wheel write, making the field unreliable. Moving the cursor
+     * away closes the bag and clears the selection (see
+     * {@link #clearSelectionIfNotHovered}); the next hover starts from scratch
+     * without keeping the previous choice. A right-click extraction clears
+     * {@code Sel} as well. Client-only, evaluated during rendering.
+     */
+    @SideOnly(Side.CLIENT)
+    public static boolean isBundleOpen(ItemStack stack) {
+        int sel = BundleContents.getSelectedIndex(stack);
+        if (sel < 0) {
+            return false;
+        }
+        Minecraft mc = Minecraft.getMinecraft();
+        if (!(mc.currentScreen instanceof GuiContainer)) {
+            return false;
+        }
+        GuiContainer gui = (GuiContainer) mc.currentScreen;
+        int[] pos = getGuiRelativeMousePos(gui);
+        Slot hitSlot = getSlotAt(gui, pos[2], pos[3]);
+        return hitSlot != null && hitSlot.getStack() == stack;
+    }
+
+    /**
+     * 将当前鼠标事件坐标换算为 GUI 内坐标（与 Minecraft.runTick 相同公式）。
+     * 返回 {mouseX, mouseY, relX, relY}，其中 rel 相对 guiLeft/guiTop。
+     * <p>Converts the current mouse event position into in-GUI coordinates
+     * using the same formula as Minecraft.runTick. Returns {mouseX, mouseY,
+     * relX, relY} where rel is relative to guiLeft/guiTop.
+     */
+    @SideOnly(Side.CLIENT)
+    private static int[] getGuiRelativeMousePos(GuiContainer gui) {
+        Minecraft mc = Minecraft.getMinecraft();
+        int mouseX = Mouse.getEventX() * gui.width / mc.displayWidth;
+        int mouseY = gui.height - Mouse.getEventY() * gui.height / mc.displayHeight - 1;
+        AccessorGuiContainer acc = (AccessorGuiContainer) (Object) gui;
+        return new int[] { mouseX, mouseY, mouseX - acc.getGuiLeft(), mouseY - acc.getGuiTop() };
+    }
+
+    /**
+     * 几何命中判定：返回 GUI 内坐标 (relX, relY) 命中的槽位，判定区间与原版
+     * isMouseOverSlot/func_146978_c 相同（16x16 外扩 1px）；未命中返回 null。
+     * <p>Geometric hit-test: returns the slot whose 16x16 rectangle (same
+     * bounds as vanilla isMouseOverSlot/func_146978_c, padded by 1px) contains
+     * the given in-GUI coordinates, or null if none.
+     */
+    @SideOnly(Side.CLIENT)
+    private static Slot getSlotAt(GuiContainer gui, int relX, int relY) {
+        for (Object o : gui.inventorySlots.inventorySlots) {
+            Slot slot = (Slot) o;
+            if (relX >= slot.xDisplayPosition - 1 && relX < slot.xDisplayPosition + 17
+                    && relY >= slot.yDisplayPosition - 1 && relY < slot.yDisplayPosition + 17) {
+                return slot;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 选择只在悬停期间有效：每次鼠标事件时调用，若光标不在某个已选中
+     * （Sel≥0）收纳袋的槽位上，则立即清除该袋子的 Sel——再次悬停从头开始，
+     * 不保留上次选择。
+     * <p>The selection is only valid while hovering: called on every mouse
+     * event; if the cursor is not over a slot holding a bundle with Sel≥0,
+     * that bundle's Sel is cleared immediately (the next hover starts from
+     * scratch, the previous choice is not kept).
+     *
+     * @param gui 当前打开的容器界面。The currently open container screen.
+     */
+    @SideOnly(Side.CLIENT)
+    public static void clearSelectionIfNotHovered(GuiContainer gui) {
+        if (gui == null || gui.inventorySlots == null) {
+            return;
+        }
+        int[] pos = getGuiRelativeMousePos(gui);
+        Slot hitSlot = getSlotAt(gui, pos[2], pos[3]);
+        for (Object o : gui.inventorySlots.inventorySlots) {
+            Slot slot = (Slot) o;
+            ItemStack s = slot.getStack();
+            if (s != null && s.getItem() instanceof BundleItem
+                    && BundleContents.getSelectedIndex(s) >= 0 && hitSlot != slot) {
+                // setSelectedIndex(-1) 会移除 "Sel" 键（回到未选择状态）；随后刷新
+                // 槽位以同步 NBT 到服务端（与滚轮写入路径一致）。
+                // (setSelectedIndex(-1) removes the "Sel" key, i.e. unselected;
+                // then refresh the slot to sync the NBT, matching the wheel path.)
+                BundleContents.setSelectedIndex(s, -1);
+                slot.onSlotChanged();
+            }
+        }
+    }
+
+    /**
+     * 无条件清除界面内所有收纳袋的选择（Sel）：GUI 打开/关闭时的兜底清理。
+     * 选择只在悬停期间有效，不应跨界面会话保留——否则上次会话写入的 Sel 会随
+     * NBT 存进存档（例如未移开光标就关界面/退出游戏时，逐帧清除没有机会执行），
+     * 下次打开界面悬停时 tooltip 会错误地显示旧的高亮。
+     * <p>Unconditionally clears the selection (Sel) of every bundle in the
+     * screen: a fail-safe purge on GUI open/close. The selection is only valid
+     * while hovering and must not survive across screen sessions — otherwise a
+     * Sel written in the previous session persists in NBT (e.g. when the GUI is
+     * closed or the game quits while the cursor is still over the bundle, the
+     * per-tick clear never gets a chance to run), and the next session would
+     * show the stale highlight in the tooltip right after hovering.
+     *
+     * @param gui 目标容器界面。The target container screen.
+     */
+    @SideOnly(Side.CLIENT)
+    public static void clearAllSelections(GuiContainer gui) {
+        if (gui == null || gui.inventorySlots == null) {
+            return;
+        }
+        for (Object o : gui.inventorySlots.inventorySlots) {
+            Slot slot = (Slot) o;
+            ItemStack s = slot.getStack();
+            if (s != null && s.getItem() instanceof BundleItem
+                    && BundleContents.getSelectedIndex(s) >= 0) {
+                BundleContents.setSelectedIndex(s, -1);
+            }
+        }
     }
 
     /**
@@ -194,12 +334,16 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
     }
 
     /**
-     * 滚轮循环切换选中索引（0..n-1 环绕）。未选中时向上滚选中第一个、向下滚选中
-     * 最后一个；空袋或滚轮无输入时不操作。返回是否发生切换（供调用方决定是否
-     * 刷新格子以同步 NBT 到服务端）。
-     * <p>Cycle the selected index with the scroll wheel (wrapping around). With no
-     * selection yet, scrolling up selects the first entry and scrolling down selects
-     * the last; empty bundles and zero wheel input are no-ops. Returns true when the
+     * 滚轮在可见槽位之间循环切换选中索引（0..displayCount-1 环绕）。未选中时向上
+     * 滚选中第一个、向下滚选中最后一个；空袋或滚轮无输入时不操作。范围限定在
+     * tooltip 可见槽位内（折叠区外的条目不可选中），保证选中项始终有可见的高亮。
+     * 返回是否发生切换（供调用方决定是否刷新格子以同步 NBT 到服务端）。
+     * <p>Cycle the selected index with the scroll wheel within the visible slots
+     * (wrapping around 0..displayCount-1). With no selection yet, scrolling up
+     * selects the first visible slot and scrolling down selects the last; empty
+     * bundles and zero wheel input are no-ops. The range is limited to the slots
+     * visible in the tooltip (entries folded out of the grid cannot be selected),
+     * so the selected entry always has a visible highlight. Returns true when the
      * selection changed, so callers can refresh the slot to sync the NBT.
      */
     public static boolean scrollSelectedIndex(ItemStack stack, int dWheel) {
@@ -210,12 +354,13 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
         if (count == 0) {
             return false;
         }
+        int visible = BundleContents.getDisplayCount(count);
         int idx = BundleContents.getSelectedIndex(stack);
         int newIdx;
         if (idx < 0) {
-            newIdx = dWheel > 0 ? 0 : count - 1;
+            newIdx = dWheel > 0 ? 0 : visible - 1;
         } else {
-            newIdx = (idx + (dWheel > 0 ? 1 : -1) + count) % count;
+            newIdx = (idx + (dWheel > 0 ? 1 : -1) + visible) % visible;
         }
         BundleContents.setSelectedIndex(stack, newIdx);
         return true;

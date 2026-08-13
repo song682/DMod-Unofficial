@@ -123,6 +123,24 @@ public class BundleContents {
         return nbt.getTagList("Items", 10).tagCount();
     }
 
+    /**
+     * tooltip 网格可见的槽位数：不超过 12 时全部显示；超过时只显示
+     * {@code 11 - ((4 - (n mod 4)) mod 4)} 个（保证最后一排满格，余下折叠为
+     * "+N" 计数器）。滚轮选中的环绕范围限定在可见槽位内，保证选中项始终有
+     * 可见的高亮。
+     * <p>Number of visible slots in the tooltip grid: all entries when
+     * {@code n <= 12}, otherwise {@code 11 - ((4 - (n mod 4)) mod 4)} so the last
+     * row is always full (the rest fold into the "+N" counter). The wheel
+     * selection cycles only within the visible slots, so the selected entry
+     * always has a visible highlight.
+     */
+    public static int getDisplayCount(int n) {
+        if (n <= 12) {
+            return n;
+        }
+        return 11 - ((4 - (n % 4)) % 4);
+    }
+
     // ==================== 写入 ====================
 
     /**
