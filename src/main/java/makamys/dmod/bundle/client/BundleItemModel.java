@@ -62,7 +62,7 @@ public class BundleItemModel extends ItemStateModel {
      * JSON 中声明式自定义类型 / 渲染时求值哨兵值。
      * 语义："袋内选中物品层"，同时用作 SelectedItemNode 求值返回的标记路径。
      */
-    public static final String SELECTED_ITEM_TYPE = "dmod:selected_item";
+    public static final String SELECTED_ITEM_TYPE = "dmod:bundle/selected_item";
 
     /**
      * 解析阶段临时占位模型路径：仅供 CatFrame 反序列化器识别为 ModelLeaf，
