@@ -14,7 +14,7 @@
             "type": "minecraft:composite",
             "models": [
               { "type": "minecraft:model", "model": "dmod:item/bundle_open_back" },
-              { "type": "dmod:bundle/selected_item" },
+              { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
               { "type": "minecraft:model", "model": "dmod:item/bundle_open_front" }
             ]
           }
