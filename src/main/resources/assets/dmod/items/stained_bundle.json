@@ -21,7 +21,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/white_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/white_bundle_open_front" }
                   ]
                 }
@@ -47,7 +47,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/orange_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/orange_bundle_open_front" }
                   ]
                 }
@@ -73,7 +73,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/magenta_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/magenta_bundle_open_front" }
                   ]
                 }
@@ -99,7 +99,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/light_blue_bundle_open_front" }
                   ]
                 }
@@ -125,7 +125,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/yellow_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/yellow_bundle_open_front" }
                   ]
                 }
@@ -151,7 +151,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/lime_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/lime_bundle_open_front" }
                   ]
                 }
@@ -177,7 +177,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/pink_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/pink_bundle_open_front" }
                   ]
                 }
@@ -203,7 +203,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/gray_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/gray_bundle_open_front" }
                   ]
                 }
@@ -229,7 +229,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/light_gray_bundle_open_front" }
                   ]
                 }
@@ -255,7 +255,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/cyan_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/cyan_bundle_open_front" }
                   ]
                 }
@@ -281,7 +281,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/purple_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/purple_bundle_open_front" }
                   ]
                 }
@@ -307,7 +307,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/blue_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/blue_bundle_open_front" }
                   ]
                 }
@@ -333,7 +333,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/brown_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/brown_bundle_open_front" }
                   ]
                 }
@@ -359,7 +359,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/green_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/green_bundle_open_front" }
                   ]
                 }
@@ -385,7 +385,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/red_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/red_bundle_open_front" }
                   ]
                 }
@@ -411,7 +411,7 @@
                   "type": "minecraft:composite",
                   "models": [
                     { "type": "minecraft:model", "model": "dmod:item/black_bundle_open_back" },
-                    { "type": "minecraft:model", "model": "dmod:item/bundle_selected_item" },
+                    { "type": "dmod:selected_item" },
                     { "type": "minecraft:model", "model": "dmod:item/black_bundle_open_front" }
                   ]
                 }
