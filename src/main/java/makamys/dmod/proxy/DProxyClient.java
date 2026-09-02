@@ -61,6 +61,35 @@ public class DProxyClient extends DProxyCommon {
         }
     }
     
+    /**
+     * Register bundle item textures with the item atlas.
+     * <p>
+     * Necessary because the bundle items/ JSON uses a custom type
+     * ({@code dmod:bundle/selected_item}) that CatFrame's standard
+     * {@code NamespaceLoadTask} cannot parse — the resulting
+     * {@code JsonParseException} causes the entire JSON to be skipped,
+     * so none of the bundle model textures are collected into the atlas.
+     * This handler ensures they are registered explicitly.
+     */
+    @SubscribeEvent
+    public void onTextureStitchPre(TextureStitchEvent.Pre event) {
+        if (event.map.getTextureType() == 1) {
+            registerBundleTextures(event);
+        }
+    }
+
+    private void registerBundleTextures(TextureStitchEvent.Pre event) {
+        String[] closed = { "bundle", "white_bundle", "orange_bundle", "magenta_bundle",
+                "light_blue_bundle", "yellow_bundle", "lime_bundle", "pink_bundle",
+                "gray_bundle", "light_gray_bundle", "cyan_bundle", "purple_bundle",
+                "blue_bundle", "brown_bundle", "green_bundle", "red_bundle", "black_bundle" };
+        for (String name : closed) {
+            event.map.registerIcon("dmod:" + name);
+            event.map.registerIcon("dmod:" + name + "_open_back");
+            event.map.registerIcon("dmod:" + name + "_open_front");
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onTextureStitchPost(TextureStitchEvent.Post event) {
         // Re-assert bundle registrations after CatFrame's incremental item-model rebuild
