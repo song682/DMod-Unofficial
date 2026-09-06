@@ -27,25 +27,28 @@ import net.minecraft.util.ResourceLocation;
  * <p>
  * Layout rules follow the vanilla Bundle spec:
  * <ul>
- *   <li>Stacks are drawn right-to-left, top-to-bottom. The most recently inserted stack
- *       lives at the top-right slot. The highlighted slot follows the bundle's selected
- *       index ({@code Sel}): when a selection exists the selected stack is highlighted,
- *       otherwise the top-right (newest) stack keeps the highlight.</li>
- *   <li>When {@code n <= 12}, every stack is shown. Otherwise we show
- *       {@code 11 - ((4 - (n mod 4)) mod 4)} stacks, reserving the bottom-right cell
- *       for a {@code "+N"} overflow counter so the last row is always full.</li>
+ *   <li>Stacks are drawn left-to-right, top-to-bottom, mirroring the 1.21
+ *       {@code ClientBundleTooltip} layout: the most recently inserted stack lives
+ *       at the top-left slot. The highlighted slot follows the bundle's selected
+ *       index ({@code Sel}): when a selection exists the selected stack is
+ *       highlighted, otherwise the top-left (newest) stack keeps the highlight.</li>
+ *   <li>When {@code n <= 12}, every stack is shown. Otherwise the grid always
+ *       fills its 12 cells with the 11 newest stacks, reserving the bottom-right
+ *       cell for a {@code "+N"} overflow counter (N = total item count of the
+ *       folded stacks).</li>
  *   <li>A capacity bar lives below the grid, blue while filling, red when full,
- *       with an "Empty"/"Full" hint text painted at the extremes.</li>
+ *       with an "Empty"/"Full" hint text painted at the extremes. The bar fill is
+ *       inset 1px from each end so its rounded caps stay inside the frame's caps.</li>
  * </ul>
  * Textures live in {@code assets/dmod/textures/gui/container/}, each paired with a
  * {@code .mcmeta} file whose {@code stretching} metadata drives CatFrame's
  * {@link decok.dfcdvadstf.catframe.ui.util.TextureStretching#drawAuto}:
  * <pre>
  * item_background.png            24x24  static(24)        - slot background
- * item_background_highlighted.png 24x24  static(24)        - highlighted slot (top-right)
- * filled_bar_boader.png          14x14  nine_patch(edge 4) - bar border, 12px effective area
- * filled_bar_half_filled.png     8x8    nine_patch(edge 3) - bar fill, not full (blue)
- * filled_bar_filled.png          8x8    nine_patch(edge 3) - bar fill, full (red)
+ * item_background_highlighted.png 24x24  static(24)        - highlighted slot (top-left)
+ * filled_bar_boader.png          12x12  nine_patch(edge 3) - hollow bar frame (caps + hairlines)
+ * filled_bar_half_filled.png     6x6    nine_patch(edge 2) - bar fill, not full (blue)
+ * filled_bar_filled.png          6x6    nine_patch(edge 2) - bar fill, full (red)
  * </pre>
  */
 @SideOnly(Side.CLIENT)
@@ -72,14 +75,20 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
     // Outer padding / gaps
     private static final int PAD = 2;
     private static final int BAR_GAP = 2;
-    // Bar border is 14x14: a 1px transparent rim around a 12px effective area
-    // (which includes the 1px top hairline, tiled across the full width).
-    private static final int BORD_W = 14, BORD_H = 14;
-    // Bar fill is 8x8 with a 1px transparent rim; drawn 12px tall so its opaque
-    // content (10px) sits exactly inside the border's effective area.
+    // Bar border is a 12x12 nine-patch (edge 3), the old 1px transparent rim trimmed
+    // away; drawn 14px tall, the 6px inner band tiles seamlessly (CatFrame drives
+    // the stretch from the .mcmeta, so these BORD_* values only feed the fallback).
+    // 边框：12x12 九宫格(edge 3)，已去掉原透明边；目标高 14px，中部 6px 无缝平铺。
+    private static final int BORD_W = 12, BORD_H = 14;
+    // Bar fill is a 6x6 nine-patch (edge 2), blue (#5555FF) or red (#FF5555 when
+    // full); drawn 12px tall at a 1px vertical offset so it sits inside the frame.
     private static final int FILL_H = 12;
-    // Vertical offset of the fill relative to the border (matches the transparent rim).
+    // Vertical offset of the fill relative to the border.
     private static final int FILL_Y_OFFSET = 1;
+    // Fill inset from each end of the frame (1.21: PROGRESSBAR_BORDER=1 /
+    // PROGRESSBAR_FILL_MAX=94): the rounded caps stay inside the frame's caps.
+    // 填充条左右端相对边框各内缩 1px，端帽不再盖住边框端帽。
+    private static final int FILL_X_INSET = 1;
 
     private final List<ItemStack> inventory;
     private final int occupancy;
@@ -104,17 +113,15 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
         this.isEmpty = stacks.isEmpty();
 
         int n = stacks.size();
-        int disp;
-        if (n <= 12) {
-            disp = n;
-        } else {
-            // Keep (disp + 1) a multiple of 4 so the last row is always filled.
-            disp = 11 - ((4 - (n % 4)) % 4);
-        }
-        this.displayCount = disp;
-        this.overflow = Math.max(0, n - disp);
+        // 复刻 1.21 溢出布局：>12 个条目时网格固定 12 格（11 个 + 右下 "+N"）。
+        // "+N" 计折叠条目的物品数量总和（现代语义，而非隐藏条数）。
+        this.displayCount = BundleContents.getDisplayCount(n);
+        this.overflow = n > this.displayCount
+                ? this.inventory.subList(this.displayCount, n).stream()
+                        .mapToInt(s -> s.stackSize).sum()
+                : 0;
 
-        int cells = disp + (overflow > 0 ? 1 : 0);
+        int cells = displayCount + (overflow > 0 ? 1 : 0);
         int r = (int) Math.ceil(cells / (double) COLUMNS);
         if (r < 1) r = 1;
         if (r > MAX_ROWS) r = MAX_ROWS;
@@ -169,17 +176,17 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
         int cells = displayCount + (overflow > 0 ? 1 : 0);
         int totalCells = rows * COLUMNS;
         FontRenderer fr = GuiDraw.fontRenderer;
-        // 高亮跟随选中索引（Sel）：已选中时高亮选中格子；未选中时保持右上角
+        // 高亮跟随选中索引（Sel）：已选中时高亮选中格子；未选中时保持左上角
         // （最新插入）高亮。选中项被折叠到显示区外时自然不出现高亮。
         // Highlight follows the selected index (Sel); without a selection the
-        // top-right (newest) slot stays highlighted. A selection folded out of
+        // top-left (newest) slot stays highlighted. A selection folded out of
         // the visible grid simply shows no highlight.
         int selected = BundleContents.getSelectedIndex(bundleStack);
 
         for (int i = 0; i < totalCells; i++) {
-            // i=0 is the top-right cell (the most recently inserted stack).
+            // i=0 is the top-left cell (the most recently inserted stack).
             int row = i / COLUMNS;
-            int col = (COLUMNS - 1) - (i % COLUMNS);
+            int col = i % COLUMNS;
             int sx = x + col * SLOT_W;
             int sy = y + row * SLOT_H;
 
@@ -225,21 +232,22 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
         //    top hairline, which is tiled across the full width automatically.
         //    边框：mcmeta 九宫格自动拉伸，顶部 1px 细线与两侧圆角帽自动延伸。
         drawAuto(TEX_BAR_BORDER, x, y, barW, BORD_H,
-                TextureStretching.StretchType.NINE_PATCH, BORD_W, BORD_H, 4, 4, 4, 4);
+                TextureStretching.StretchType.NINE_PATCH, BORD_W, BORD_H, 3, 3, 3, 3);
 
-        // 2) Fill scaled by occupancy / CAPACITY. Its length matches the border's
-        //    full width (the 1px transparent rim makes the opaque content line up
-        //    with the border's effective area), and the nine-patch keeps rounded
-        //    caps on both ends - including the right cap the old code omitted.
-        //    填充：长度与边框一致；九宫格自动保留左右圆角帽（右侧帽子效果）。
+        // 2) Fill scaled by occupancy / CAPACITY, inset 1px from each end of the
+        //    frame (1.21: PROGRESSBAR_BORDER=1 / PROGRESSBAR_FILL_MAX=94), so the
+        //    nine-patch caps never cover the frame's own end caps.
+        //    填充：长度按容量比例缩放，左右各内缩 1px（对齐 1.21），圆角帽始终
+        //    保持在边框端帽之内（未满蓝色 / 满红色）。
         boolean full = occupancy >= CAPACITY;
-        int fillPx = (int) Math.round(barW * (Math.min(occupancy, CAPACITY) / (double) CAPACITY));
+        int fillMax = barW - 2 * FILL_X_INSET;
+        int fillPx = (int) Math.round(fillMax * (Math.min(occupancy, CAPACITY) / (double) CAPACITY));
         if (fillPx < 0) fillPx = 0;
-        if (fillPx > barW) fillPx = barW;
+        if (fillPx > fillMax) fillPx = fillMax;
         if (fillPx > 0) {
             drawAuto(full ? TEX_BAR_FILLED : TEX_BAR_HALF_FILLED,
-                    x, y + FILL_Y_OFFSET, fillPx, FILL_H,
-                    TextureStretching.StretchType.NINE_PATCH, 8, 8, 3, 3, 3, 3);
+                    x + FILL_X_INSET, y + FILL_Y_OFFSET, fillPx, FILL_H,
+                    TextureStretching.StretchType.NINE_PATCH, 6, 6, 2, 2, 2, 2);
         }
 
         // 3) empty / full hint text.

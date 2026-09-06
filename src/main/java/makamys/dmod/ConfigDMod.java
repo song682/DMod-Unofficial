@@ -39,6 +39,7 @@ public class ConfigDMod {
     public static List<Item> bundleCraftingItems;
     public static boolean compactBundleGUI;
     public static boolean modernBundle;
+    public static boolean showBundleFullness;
     public static boolean durabilityBarColor;
     
     public static BackpackConfigHelper backpackHelper;
@@ -115,6 +116,7 @@ public class ConfigDMod {
         // BundleTooltipRenderer no longer consumes this key).
         compactBundleGUI = config.getBoolean("compactBundleGUI", "bundle", false, "Remove extra spacing between rows in the bundle tooltip.");
         modernBundle = enableBundle && config.getBoolean("modernBundle", "bundle", false, "Render the bundle with the modern (1.21+) style: colored capacity bar on the item (blue while filling, red when full), and unlocks other modern-style behaviors. Requires enableBundle=true. See https://minecraft.wiki/w/Bundle.");
+        showBundleFullness = config.getBoolean("showBundleFullness", "bundle", false, "Show the occupancy count (x/64) text line in the bundle tooltip. Hidden by default to match the modern (1.21+) tooltip look.");
         
         // TODO tweak the level requirements of each individual ability
         foxAbilityMode = getEnum(config, "foxAbilityMode", "fox", EntityFox.AbilityMode.NORMAL, "NORMAL: Foxes unlock abilities as they level up\nUNLOCK_ALL: All abilities are unlocked from the start\nUNLOCK_NONE: No abilities will ever be unlocked\nNote: changing this won't affect the amount of exp foxes have, just whether the abilities will be enabled or not");

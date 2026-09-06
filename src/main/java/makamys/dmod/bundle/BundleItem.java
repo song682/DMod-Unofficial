@@ -433,7 +433,12 @@ public class BundleItem extends ItemFuture implements IItemStateProvider, IConfi
     @SideOnly(Side.CLIENT)
     @Override
     public void appendTooltip(ItemStack stack, World world, List<String> tooltip) {
-        tooltip.add(EnumChatFormatting.GRAY + I18n.format("item." + MODID + "." + (colored ? "stained_bundle" : "bundle") + ".fullness",
-                BundleContents.getOccupancy(stack), BundleContents.MAX_STORAGE));
+        // 占用数量行（x/64）为可选特性：默认关闭以对齐 1.21 tooltip（无此文字行）。
+        // (The occupancy count line (x/64) is optional; hidden by default to
+        // match the 1.21 tooltip, which shows no such text.)
+        if (ConfigDMod.showBundleFullness) {
+            tooltip.add(EnumChatFormatting.GRAY + I18n.format("item." + MODID + "." + (colored ? "stained_bundle" : "bundle") + ".fullness",
+                    BundleContents.getOccupancy(stack), BundleContents.MAX_STORAGE));
+        }
     }
 }

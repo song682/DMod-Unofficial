@@ -124,21 +124,17 @@ public class BundleContents {
     }
 
     /**
-     * tooltip 网格可见的槽位数：不超过 12 时全部显示；超过时只显示
-     * {@code 11 - ((4 - (n mod 4)) mod 4)} 个（保证最后一排满格，余下折叠为
-     * "+N" 计数器）。滚轮选中的环绕范围限定在可见槽位内，保证选中项始终有
-     * 可见的高亮。
+     * tooltip 网格可见的槽位数：不超过 12 时全部显示；超过 12 时固定为 11 个
+     * （网格恒为 12 格满排，右下角让给 "+N" 计数器，余下条目折叠其中）。
+     * 滚轮选中的环绕范围限定在可见槽位内，保证选中项始终有可见的高亮。
      * <p>Number of visible slots in the tooltip grid: all entries when
-     * {@code n <= 12}, otherwise {@code 11 - ((4 - (n mod 4)) mod 4)} so the last
-     * row is always full (the rest fold into the "+N" counter). The wheel
-     * selection cycles only within the visible slots, so the selected entry
-     * always has a visible highlight.
+     * {@code n <= 12}, otherwise a constant {@code 11} (the grid always fills
+     * 12 cells, the bottom-right one being the "+N" counter; the rest of the
+     * entries fold into it). The wheel selection cycles only within the
+     * visible slots, so the selected entry always has a visible highlight.
      */
     public static int getDisplayCount(int n) {
-        if (n <= 12) {
-            return n;
-        }
-        return 11 - ((4 - (n % 4)) % 4);
+        return n <= 12 ? n : 11;
     }
 
     // ==================== 写入 ====================
