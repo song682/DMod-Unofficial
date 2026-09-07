@@ -190,19 +190,24 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
             int sx = x + col * SLOT_W;
             int sy = y + row * SLOT_H;
 
+            // The "+N" overflow cell is text-only: no slot background behind it.
+            // "+N" 溢出格不绘制 item background，只显示数字。
+            boolean isOverflowCell = overflow > 0 && i == cells - 1;
             boolean highlighted;
             if (selected >= 0 && selected < inventory.size()) {
                 highlighted = i == selected;
             } else {
                 highlighted = i == 0 && displayCount > 0;
             }
-            drawAuto(highlighted ? TEX_SLOT_HIGHLIGHTED : TEX_SLOT,
-                    sx, sy, SLOT_W, SLOT_H,
-                    TextureStretching.StretchType.STATIC, SLOT_W, SLOT_H, 0, 0, 0, 0);
+            if (!isOverflowCell) {
+                drawAuto(highlighted ? TEX_SLOT_HIGHLIGHTED : TEX_SLOT,
+                        sx, sy, SLOT_W, SLOT_H,
+                        TextureStretching.StretchType.STATIC, SLOT_W, SLOT_H, 0, 0, 0, 0);
+            }
 
             if (i >= cells) continue;
 
-            if (overflow > 0 && i == cells - 1) {
+            if (isOverflowCell) {
                 // "+N" overflow marker in the bottom-right cell.
                 String s = "+" + overflow;
                 int tw = fr.getStringWidth(s);
