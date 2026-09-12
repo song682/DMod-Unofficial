@@ -97,7 +97,7 @@ dependencies {
     implementation "maven.modrinth:codechickencore-unofficial:${project.cc_version}"
     implementation "maven.modrinth:codechickenlib-unofficial:${project.cc_version}"
 
-    implementation "maven.modrinth:etfuturum:2.6.2"
+    compileOnly "maven.modrinth:etfuturum:2.6.2"
 
     implementation fileTree(dir: 'lib', includes: ['*.jar'])
 
