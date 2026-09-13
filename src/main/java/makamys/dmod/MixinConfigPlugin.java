@@ -12,11 +12,17 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import makamys.dmod.ConfigDMod.ForceableBoolean;
+import makamys.dmod.compat.EtFuturumGTNHDetector;
 
 public class MixinConfigPlugin implements IMixinConfigPlugin {
     
     @Override
     public void onLoad(String mixinPackage) {
+        // Detect the GTNH fork of Et Futurum Requiem before the config is read, so
+        // the fox gate reflects it here and in every later reload. This must run at
+        // mixin onLoad time because shouldApplyMixin for the fox mixins fires long
+        // before FML's Loader is usable.
+        ConfigDMod.etFuturumGTNH = EtFuturumGTNHDetector.isGTNHPresent();
         ConfigDMod.reload(true);
     }
 

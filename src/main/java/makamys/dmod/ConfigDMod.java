@@ -36,6 +36,16 @@ public class ConfigDMod {
     public static boolean enableFox;
     public static boolean enableBundle;
 
+    /**
+     * Set once at mixin {@code onLoad} time by
+     * {@link makamys.dmod.compat.EtFuturumGTNHDetector}. When {@code true}, the
+     * GTNH fork of Et Futurum Requiem is present and {@link #enableFox} is forced
+     * off on every {@link #reload} so DMod's foxes never collide with the fork's
+     * own foxes and its overlapping {@code MixinEntityLivingBase}/{@code
+     * MixinEntityWolf}.
+     */
+    public static boolean etFuturumGTNH;
+
     public static List<Item> bundleCraftingItems;
     public static boolean compactBundleGUI;
     public static boolean modernBundle;
@@ -106,6 +116,12 @@ public class ConfigDMod {
         config.load();
         
         enableFox = config.getBoolean("enableFox", "_features", true, "");
+        // The GTNH fork of Et Futurum Requiem ships its own foxes with overlapping
+        // mixins; when it is present, force DMod's foxes off regardless of the
+        // config value (decided early by EtFuturumGTNHDetector at mixin onLoad).
+        if (etFuturumGTNH) {
+            enableFox = false;
+        }
         enableBundle = config.getBoolean("enableBundle", "_features", true, "");
         
         wolvesTargetFoxes = config.getBoolean("wolvesTargetFoxes", "Mixins", true, "");

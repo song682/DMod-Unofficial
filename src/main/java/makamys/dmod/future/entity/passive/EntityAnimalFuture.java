@@ -18,8 +18,32 @@ import net.minecraft.world.World;
 
 public abstract class EntityAnimalFuture extends EntityAnimal implements EntityLivingFutured {
 
+    /**
+     * Self-owned stand-in for {@link net.minecraft.entity.EntityLiving}'s
+     * {@code canPickUpLoot} flag.
+     * <p>
+     * Hodgepodge's {@code preventPickupLoot} tweak {@code @Overwrite}s
+     * {@code EntityLiving.canPickUpLoot()} and {@code setCanPickUpLoot(boolean)}
+     * to hard-code {@code false} on the base class, which silently breaks fox
+     * item pickup. Because the two methods below override them on this subclass,
+     * virtual dispatch routes every fox pickup check here instead of to the
+     * overwritten base methods, so DMod's foxes keep working regardless of that
+     * global tweak. The vanilla base field is intentionally left untouched.
+     */
+    private boolean canPickUpLootFuture;
+
     public EntityAnimalFuture(World p_i1681_1_) {
         super(p_i1681_1_);
+    }
+
+    @Override
+    public boolean canPickUpLoot() {
+        return this.canPickUpLootFuture;
+    }
+
+    @Override
+    public void setCanPickUpLoot(boolean canPickUpLoot) {
+        this.canPickUpLootFuture = canPickUpLoot;
     }
     
     @Override
