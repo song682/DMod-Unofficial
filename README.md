@@ -4,9 +4,9 @@
 
 D-Mod is a mod that backports some features from later versions of Minecraft to 1.7.10. You could consider it an add-on to [Et Futurum Requiem](https://www.curseforge.com/minecraft/mc-mods/et-futurum-requiem) (though it's not a hard dependency).
 
-Currently implemented:
+# Currently implemented:
 
-* Foxes
+* Foxes(Before 2.2.0)
 * Bundles
 * Colorful bundles
 
@@ -18,6 +18,11 @@ The major ones are getting healed when fed food, following the owner after being
 
 More info [in the wiki](https://github.com/makamys/DMod/wiki/Fox).
 
+## Bundle
+
+The bundle has three layers, which let it show the contents in the item like it opens.   
+Also the tooltip is also modernized.    
+
 # Dependencies
 
 * Item icons in bundle tooltips will only be drawn if [NEI](https://www.curseforge.com/minecraft/mc-mods/notenoughitems) is installed (I recommend the [GTNH fork](https://www.curseforge.com/minecraft/mc-mods/notenoughitems-gtnh)).
@@ -26,14 +31,12 @@ More info [in the wiki](https://github.com/makamys/DMod/wiki/Fox).
 * [Et Futurum Requiem](https://www.curseforge.com/minecraft/mc-mods/et-futurum-requiem) is highly recommended as it backports sweet berries (useful for foxes) and rabbits (useful for bundles).
 
 
-# Incompatibilities
-
-* [Hodgepodge](https://github.com/GTNewHorizons/Hodgepodge): set `preventPickupLoot=false` or else foxes won't be able to pick up items
-
 # License
 
-This mod is licensed under [MIT License](LICENSE) (Former is the [Unlicense](LICENSE-legacy)). It largely consists of ported Mojang code though, so keep that in mind.
+This mod is licensed under [MIT License](LICENSE) (Former is the [Unlicense](LICENSE-legacy)).   
+It largely consists of ported Mojang code though, so keep that in mind.
 
 # Credits
 
-The original mod, which is usually a big help in this unofficial's development. The original link: [![1.12.2](https://img.shields.io/badge/GitHub-gray?logo=github)](https://github.com/makamys/DMod)[![CurseForge](https://shields.io/badge/CurseForge-555555?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/dmod)
+The original mod, which is usually a big help in this unofficial's development.    
+The original link: [![1.12.2](https://img.shields.io/badge/GitHub-gray?logo=github)](https://github.com/makamys/DMod)[![CurseForge](https://shields.io/badge/CurseForge-555555?logo=curseforge)](https://www.curseforge.com/minecraft/mc-mods/dmod)

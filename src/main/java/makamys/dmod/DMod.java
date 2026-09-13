@@ -23,7 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
         modid = MODID,
         version = VERSION,
         name = "DMod",
-        dependencies = "required-after:catframe@[0.6.0,);required-after:jarutils@[0.0.2,);after:etfuturm@[2.6.2,)"
+        dependencies = "required-after:catframe@[0.6.0,);required-after:jarutils@[0.0.2,);after:etfuturum@[2.6.2,)"
 )
 public class DMod
 {   
