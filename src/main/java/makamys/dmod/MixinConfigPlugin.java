@@ -11,18 +11,10 @@ import org.spongepowered.asm.mixin.MixinEnvironment.Side;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
-import makamys.dmod.ConfigDMod.ForceableBoolean;
-import makamys.dmod.compat.EtFuturumGTNHDetector;
-
 public class MixinConfigPlugin implements IMixinConfigPlugin {
     
     @Override
     public void onLoad(String mixinPackage) {
-        // Detect the GTNH fork of Et Futurum Requiem before the config is read, so
-        // the fox gate reflects it here and in every later reload. This must run at
-        // mixin onLoad time because shouldApplyMixin for the fox mixins fires long
-        // before FML's Loader is usable.
-        ConfigDMod.etFuturumGTNH = EtFuturumGTNHDetector.isGTNHPresent();
         ConfigDMod.reload(true);
     }
 
@@ -34,17 +26,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        boolean foxEnabled = ConfigDMod.enableFox;
-        
         if(Arrays.asList(
-                "makamys.dmod.mixin.MixinEntityWolf"
-                ).contains(mixinClassName)){
-            return ConfigDMod.wolvesTargetFoxes && foxEnabled;    
-        } else if(Arrays.asList(
-                "makamys.dmod.mixin.MixinEntityLivingBase"
-                ).contains(mixinClassName)){
-            return foxEnabled && ConfigDMod.lootingFoxFix != ForceableBoolean.FALSE;
-        } else if(Arrays.asList(
                 "makamys.dmod.mixin.MixinRenderItem"
                 ).contains(mixinClassName)){
             return MixinEnvironment.getCurrentEnvironment().getSide() == Side.CLIENT && ConfigDMod.durabilityBarColor;
@@ -52,10 +34,6 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
                 "makamys.dmod.mixin.MixinContainer"
                 ).contains(mixinClassName)){
             return ConfigDMod.enableBundle;
-        } else if(Arrays.asList(
-                "makamys.dmod.mixin.MixinEntityLiving"
-                ).contains(mixinClassName)){
-            return foxEnabled;
         } else {
             return true;
         }

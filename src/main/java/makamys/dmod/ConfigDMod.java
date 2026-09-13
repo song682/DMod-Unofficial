@@ -12,8 +12,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.EnumUtils;
 
-import makamys.dmod.entity.EntityFox;
-import makamys.dmod.util.WeightedRandomItem;
+
 import makamys.mclib.config.item.BackpackConfigHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -24,27 +23,10 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ConfigDMod {
     
-    public static List<Item> foxBreedingItems;
-    public static List<WeightedRandomItem<Item>> foxMouthItems;
-    public static List<Class<Entity>> rabbitEntities;
-    public static EntityFox.AbilityMode foxAbilityMode;
-    public static float foxExpModifier;
-    
-    public static boolean wolvesTargetFoxes;
-    public static ForceableBoolean lootingFoxFix;
 
-    public static boolean enableFox;
     public static boolean enableBundle;
 
-    /**
-     * Set once at mixin {@code onLoad} time by
-     * {@link makamys.dmod.compat.EtFuturumGTNHDetector}. When {@code true}, the
-     * GTNH fork of Et Futurum Requiem is present and {@link #enableFox} is forced
-     * off on every {@link #reload} so DMod's foxes never collide with the fork's
-     * own foxes and its overlapping {@code MixinEntityLivingBase}/{@code
-     * MixinEntityWolf}.
-     */
-    public static boolean etFuturumGTNH;
+
 
     public static List<Item> bundleCraftingItems;
     public static boolean compactBundleGUI;
@@ -115,17 +97,8 @@ public class ConfigDMod {
         
         config.load();
         
-        enableFox = config.getBoolean("enableFox", "_features", true, "");
-        // The GTNH fork of Et Futurum Requiem ships its own foxes with overlapping
-        // mixins; when it is present, force DMod's foxes off regardless of the
-        // config value (decided early by EtFuturumGTNHDetector at mixin onLoad).
-        if (etFuturumGTNH) {
-            enableFox = false;
-        }
         enableBundle = config.getBoolean("enableBundle", "_features", true, "");
         
-        wolvesTargetFoxes = config.getBoolean("wolvesTargetFoxes", "Mixins", true, "");
-        lootingFoxFix = getEnum(config, "lootingFoxFix", "Mixins", ForceableBoolean.TRUE, "Make looting enchants of fox weapons have an effect.", true);
         durabilityBarColor = config.getBoolean("durabilityBarColor", "Mixins", true, "Change the durability bar color of certain items (bundles)");
         
         // Deprecated: kept only for config-file compatibility (the unified
@@ -134,17 +107,7 @@ public class ConfigDMod {
         modernBundle = enableBundle && config.getBoolean("modernBundle", "bundle", false, "Render the bundle with the modern (1.21+) style: colored capacity bar on the item (blue while filling, red when full), and unlocks other modern-style behaviors. Requires enableBundle=true. See https://minecraft.wiki/w/Bundle.");
         showBundleFullness = config.getBoolean("showBundleFullness", "bundle", false, "Show the occupancy count (x/64) text line in the bundle tooltip. Hidden by default to match the modern (1.21+) tooltip look.");
         
-        // TODO tweak the level requirements of each individual ability
-        foxAbilityMode = getEnum(config, "foxAbilityMode", "fox", EntityFox.AbilityMode.NORMAL, "NORMAL: Foxes unlock abilities as they level up\nUNLOCK_ALL: All abilities are unlocked from the start\nUNLOCK_NONE: No abilities will ever be unlocked\nNote: changing this won't affect the amount of exp foxes have, just whether the abilities will be enabled or not");
-        foxExpModifier = config.getFloat("foxExpModifier", "Fox", 1f, 0f, Float.POSITIVE_INFINITY, "The EXP foxes earn will get multiplied by this value.");
-        
         if(!early) {
-            foxBreedingItems =
-                    resolveItemListOrDefault(config, "foxBreedingItems", "Fox", new String[]{"etfuturum:sweet_berries"}, "Falls back to wheat if none of the items can be resolved", Items.wheat);
-            rabbitEntities =
-                    resolveEntityClassListOrDefault(config, "rabbitEntities", "Fox", new String[]{"etfuturum.rabbit"}, "");
-            foxMouthItems = Arrays.stream(config.getStringList("foxMouthItems", "Fox", new String[] {"emerald=5", "egg=15", "etfuturum:rabbit_foot=10", "etfuturum:rabbit_hide=10", "wheat=20", "leather=20", "feather=20"}, "item=weight pairs deciding the relative likelyhood of foxes spawning with certain items. Entries containing items that can't be resolved will be ignored."))
-                    .map(str -> parseWeightedItemEntry(str)).filter(p -> p != null).collect(Collectors.toList());
             bundleCraftingItems = 
                     resolveItemListOrDefault(config, "bundleCraftingItems", "bundle", new String[]{"etfuturum:rabbit_hide"}, "Falls back to leather if none of the items can be resolved", Items.leather);
             backpackHelper = new BackpackConfigHelper(Arrays.asList(config.getStringList("bundleItemBlacklist", "bundle", Stream.of(
@@ -159,26 +122,7 @@ public class ConfigDMod {
         }
     }
     
-    private static WeightedRandomItem<Item> parseWeightedItemEntry(String str) {
-        String[] halves = str.split("=");
-        if(halves.length == 2) {
-            Object itemObj = Item.itemRegistry.getObject(halves[0]);
-            if(itemObj != null) {
-                Item item = (Item)itemObj;
-                try {
-                    int weight = Integer.parseInt(halves[1]);
-                    return new WeightedRandomItem<>(weight, item);
-                } catch(NumberFormatException e) {
-                    LOGGER.warn("Invalid weight (must be an integer): " + halves[1]);
-                }
-            } else {
-                LOGGER.debug("No item called " + halves[0]);
-            }
-        } else {
-            LOGGER.warn("Incorrect pair: " + str);
-        }
-        return null;
-    }
+
     
     public static enum ForceableBoolean { TRUE, FALSE, FORCE }
     

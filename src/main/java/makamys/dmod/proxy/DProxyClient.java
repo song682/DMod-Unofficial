@@ -2,7 +2,6 @@ package makamys.dmod.proxy;
 
 import static makamys.dmod.DModConstants.LOGGER;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -10,10 +9,7 @@ import decok.dfcdvadstf.catframe.model.ModelRegistry;
 import makamys.dmod.ConfigDMod;
 import makamys.dmod.DModItems;
 import makamys.dmod.bundle.client.BundleItemModel;
-import makamys.dmod.client.render.ModelFox;
-import makamys.dmod.client.render.RenderFox;
 import makamys.dmod.compat.NEICompat;
-import makamys.dmod.entity.EntityFox;
 import makamys.dmod.future.item.ItemFuture;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -23,10 +19,6 @@ public class DProxyClient extends DProxyCommon {
     @Override
     public void init() {
         super.init();
-        
-        if(ConfigDMod.enableFox) {
-            RenderingRegistry.registerEntityRenderingHandler(EntityFox.class, new RenderFox(new ModelFox(), 0.4F));
-        }
         
         // TODO don't crash if chicken is not present
         if(Loader.isModLoaded("NotEnoughItems")) {
