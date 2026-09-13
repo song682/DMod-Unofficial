@@ -97,21 +97,6 @@ public class BundleContents {
     }
 
     /**
-     * 返回袋内首条目（列表头，即最新插入的物品）。损坏条目返回 null。
-     */
-    public static ItemStack getFirstItem(ItemStack stack) {
-        NBTTagCompound nbt = stack != null ? stack.stackTagCompound : null;
-        if (nbt == null || !nbt.hasKey("Items")) {
-            return null;
-        }
-        NBTTagList tagList = nbt.getTagList("Items", 10);
-        if (tagList.tagCount() == 0) {
-            return null;
-        }
-        return ItemStack.loadItemStackFromNBT(tagList.getCompoundTagAt(0));
-    }
-
-    /**
      * 返回袋内条目数（直接读 {@code "Items"} 列表长度，不做 NBT 反序列化；
      * 损坏条目也计入，与选中索引的钳制范围一致）。用于滚轮选择的环绕范围。
      */

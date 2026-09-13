@@ -1,13 +1,9 @@
 package makamys.dmod.proxy;
 
-import static makamys.dmod.DModConstants.LOGGER;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import makamys.dmod.ConfigDMod;
-import makamys.dmod.DMod;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.item.ItemTossEvent;

@@ -5,12 +5,7 @@
     "refmap": "mixins.dmod.refmap.json",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-      "accessor.AccessorBlock",
-      "accessor.AccessorEntityAIMate",
-      "accessor.AccessorEntityAITarget",
-      "accessor.AccessorEntityAINearestAttackableTarget",
-      "accessor.AccessorGuiContainer",
-      "accessor.AccessorItemFood",
+        "accessor.AccessorGuiContainer",
     	"MixinContainer",
     	"MixinGuiContainer",
     	"MixinGuiScreen",

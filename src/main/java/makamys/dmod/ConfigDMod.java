@@ -6,16 +6,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.EnumUtils;
-
-
 import makamys.mclib.config.item.BackpackConfigHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
@@ -54,37 +48,6 @@ public class ConfigDMod {
         return items;
     }
     
-    // nice copypasta
-    private static List<Class<Entity>> resolveEntityClassListOrDefault(Configuration config, String propName, String propCat, String[] propDefault, String propComment, Class<Entity>... defaults){
-        String[] list = config.getStringList(propName, propCat, propDefault, propComment);
-        List<Class<Entity>> items = new ArrayList<>();
-        for(String itemStr : list) {
-            Object itemObj = EntityList.stringToClassMapping.get(itemStr);
-            if(itemObj != null) {
-                items.add((Class<Entity>)itemObj);
-            }
-        }
-        if(items.isEmpty() && list.length > 0) {
-            LOGGER.debug("Couldn't resolve any of the entity names in " + propCat + "." + propName + ", falling back to defaults");
-            items = Arrays.asList(defaults);
-        }
-        
-        LOGGER.debug("Resolved " + propCat + "." + propName + " to " + items.stream().map(e -> EntityList.classToStringMapping.get(e)).collect(Collectors.toList()));
-        return items;
-    }
-    
-    private static <E extends Enum> E getEnum(Configuration config, String propName, String propCat, E propDefault, String propComment) {
-        return getEnum(config, propName, propCat, propDefault, propComment, false);
-    }
-    
-    private static <E extends Enum> E getEnum(Configuration config, String propName, String propCat, E propDefault, String propComment, boolean lowerCase) {
-        Map enumMap = EnumUtils.getEnumMap(propDefault.getClass());
-        String[] valuesStr = (String[])enumMap.keySet().toArray(new String[]{});
-        String defaultString = propDefault.toString();
-        if(lowerCase) defaultString = defaultString.toLowerCase();
-        return (E)enumMap.get(config.getString(propName, propCat, defaultString, propComment, valuesStr).toUpperCase());
-    }
-    
     public static void reload() {
         reload(false);
     }
@@ -121,9 +84,5 @@ public class ConfigDMod {
             config.save();
         }
     }
-    
-
-    
-    public static enum ForceableBoolean { TRUE, FALSE, FORCE }
     
 }

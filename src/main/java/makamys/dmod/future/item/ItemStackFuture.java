@@ -1,15 +1,9 @@
 package makamys.dmod.future.item;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class ItemStackFuture {
-    
-    public static ItemStack finishUsing(ItemStack dis, World world, EntityLiving user) {
-        return ItemFuture.finishUsing(dis.getItem(), dis, world, user);
-    }
     
     public static void decrement(ItemStack dis, int count) {
         // TODO is this correct?
