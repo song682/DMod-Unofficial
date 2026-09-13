@@ -6,7 +6,7 @@ import java.util.List;
 import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import makamys.dmod.mixin.AccessorItemFood;
+import makamys.dmod.mixin.accessor.AccessorItemFood;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -60,6 +60,10 @@ public abstract class ItemFuture extends Item implements IItemFuture {
     @SideOnly(Side.CLIENT)
     public List<ITooltipLineHandler> getTooltipHandlers(ItemStack stack){
         return Arrays.asList();
+    }
+
+    public boolean isEnabled() {
+        return true;
     }
 
 }

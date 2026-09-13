@@ -4,7 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import decok.dfcdvadstf.catframe.recipe.CatFrameRecipeManager;
 import makamys.dmod.bundle.BundleColor;
 import makamys.dmod.bundle.BundleItem;
-import makamys.dmod.item.IConfigurable;
+import makamys.dmod.future.item.IItemFuture;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class DModItems {
     }
     
     private static Item initItem(Item item) {
-        if(!(item instanceof IConfigurable) || ((IConfigurable)item).isEnabled()) {
+        if(!(item instanceof IItemFuture) || ((IItemFuture)item).isEnabled()) {
             String name = item.getUnlocalizedName();
             int firstDot = name.lastIndexOf('.');
             GameRegistry.registerItem(item, name.substring(firstDot + 1));

@@ -19,8 +19,7 @@ import makamys.dmod.bundle.client.BundleTooltipRenderer;
 import makamys.dmod.future.inventory.SlotFuture;
 import makamys.dmod.future.item.ItemFuture;
 import makamys.dmod.future.item.ItemStackFuture;
-import makamys.dmod.item.IConfigurable;
-import makamys.dmod.mixin.AccessorGuiContainer;
+import makamys.dmod.mixin.accessor.AccessorGuiContainer;
 import makamys.dmod.util.StatRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -68,7 +67,7 @@ import org.lwjgl.input.Mouse;
  * delegated to CatFrame decision-tree models; interactions delegate to
  * {@link BundleContents}.
  */
-public class BundleItem extends ItemFuture implements IItemStateProvider, IConfigurable {
+public class BundleItem extends ItemFuture implements IItemStateProvider {
 
     /** true = stained_bundle（16 色），false = bundle（经典） */
     private final boolean colored;

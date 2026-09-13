@@ -11,9 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
- * Shared interface for items that support bundle-style inventory interaction
- * and colored durability bars. Implemented by both {@link ItemFuture} (vanilla Item subclass)
- * and ModernItem-based items.
+ * Shared interface for items that support bundle-style inventory interaction,
+ * colored durability bars, and runtime configuration gating.
+ * Merges the former {@code IConfigurable} contract so that a single instanceof
+ * check covers interaction, tooltip, and enablement.
  */
 public interface IItemFuture {
 
@@ -31,4 +32,9 @@ public interface IItemFuture {
     @cpw.mods.fml.common.Optional.Method(modid = "CodeChickenCore")
     @SideOnly(Side.CLIENT)
     List<ITooltipLineHandler> getTooltipHandlers(ItemStack stack);
+
+    /**
+     * Returns whether this item is enabled according to the current config.
+     */
+    boolean isEnabled();
 }
