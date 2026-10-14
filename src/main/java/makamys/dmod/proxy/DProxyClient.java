@@ -27,6 +27,7 @@ public class DProxyClient extends DProxyCommon {
             LOGGER.warn("NotEnoughItems was not found. Some optional features will not work.");
         }
         
+        BundleItemModel.registerNodeTypes();
         registerBundleModels();
     }
     
@@ -34,10 +35,9 @@ public class DProxyClient extends DProxyCommon {
      * Register the CatFrame decision-tree models for both bundle items.
      * <p>
      * Persistent registration deliberately suppresses the automatic items/ registration:
-     * the decision tree is parsed by {@link BundleItemModel} itself (so the
-     * {@code bundle_selected_item} marker layer can be intercepted), while texture
-     * collection is still done independently by CatFrame's NamespaceLoadTask — the
-     * two do not conflict.
+     * the custom {@code dmod:bundle_selected_item} node is registered before the
+     * JSON is parsed, while texture collection is still done independently by
+     * CatFrame's NamespaceLoadTask — the two do not conflict.
      * <p>
      * NOTE: CatFrame's incremental rebuild ({@code registerItemModels}, fired on the
      * item-atlas stitch Post) unconditionally overwrites registered models from

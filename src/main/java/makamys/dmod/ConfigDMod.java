@@ -19,11 +19,7 @@ public class ConfigDMod {
     
 
     public static boolean enableBundle;
-
-
-
     public static List<Item> bundleCraftingItems;
-    public static boolean compactBundleGUI;
     public static boolean modernBundle;
     public static boolean showBundleFullness;
     public static boolean durabilityBarColor;
@@ -64,9 +60,6 @@ public class ConfigDMod {
         
         durabilityBarColor = config.getBoolean("durabilityBarColor", "Mixins", true, "Change the durability bar color of certain items (bundles)");
         
-        // Deprecated: kept only for config-file compatibility (the unified
-        // BundleTooltipRenderer no longer consumes this key).
-        compactBundleGUI = config.getBoolean("compactBundleGUI", "bundle", false, "Remove extra spacing between rows in the bundle tooltip.");
         modernBundle = enableBundle && config.getBoolean("modernBundle", "bundle", false, "Render the bundle with the modern (1.21+) style: colored capacity bar on the item (blue while filling, red when full), and unlocks other modern-style behaviors. Requires enableBundle=true. See https://minecraft.wiki/w/Bundle.");
         showBundleFullness = config.getBoolean("showBundleFullness", "bundle", false, "Show the occupancy count (x/64) text line in the bundle tooltip. Hidden by default to match the modern (1.21+) tooltip look.");
         

@@ -1,7 +1,7 @@
 package makamys.dmod;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import decok.dfcdvadstf.catframe.recipe.CatFrameRecipeManager;
+import decok.dfcdvadstf.catframe.recipe.TagRecipeManager;
 import makamys.dmod.bundle.BundleColor;
 import makamys.dmod.bundle.BundleItem;
 import makamys.dmod.future.item.IItemFuture;
@@ -32,7 +32,7 @@ public class DModItems {
         // Both versions need the basic crafting recipe (CatFrame ShapedTagRecipe,
         // mirrored by default — equivalent to the old GameRegistry behavior)
         for(Item bundleCraftingItem : ConfigDMod.bundleCraftingItems) {
-            CatFrameRecipeManager.addShaped(new ItemStack(bundle), "SLS", "L L", "LLL", 'L', bundleCraftingItem, 'S', Items.string);
+            TagRecipeManager.addShaped(new ItemStack(bundle), "SLS", "L L", "LLL", 'L', bundleCraftingItem, 'S', Items.string);
         }
         
         // Only modern bundle needs dye recipes. BundleColor is the single source
@@ -40,7 +40,7 @@ public class DModItems {
         // mis-mapping bug); 32767 = wildcard metadata.
         if (ConfigDMod.modernBundle && modernBundleItem != null) {
             for(BundleColor color : BundleColor.values()) {
-                CatFrameRecipeManager.addShapeless(new ItemStack(modernBundleItem, 1, color.getBundleMeta()),
+                TagRecipeManager.addShapeless(new ItemStack(modernBundleItem, 1, color.getBundleMeta()),
                         new ItemStack(modernBundleItem, 1, 32767),
                         new ItemStack(Items.dye, 1, color.getDyeMeta()));
             }

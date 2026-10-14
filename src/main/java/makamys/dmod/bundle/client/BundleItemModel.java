@@ -6,6 +6,10 @@ import decok.dfcdvadstf.catframe.model.BakedModelCache;
 import decok.dfcdvadstf.catframe.model.ModelRegistry;
 import decok.dfcdvadstf.catframe.model.render.UniformRenderPipeline;
 import decok.dfcdvadstf.catframe.model.render.api.RenderPhase;
+import decok.dfcdvadstf.catframe.model.render.api.RenderTypeKey;
+import decok.dfcdvadstf.catframe.model.render.pipeline.RenderCommandBuffers;
+import decok.dfcdvadstf.catframe.model.render.pipeline.RenderSubmit;
+import decok.dfcdvadstf.catframe.model.render.pipeline.RenderTypeRegistry;
 import decok.dfcdvadstf.catframe.model.state.BlockStateModelPart;
 import decok.dfcdvadstf.catframe.model.state.item.EvalResult;
 import decok.dfcdvadstf.catframe.model.state.item.ItemStateModel;
@@ -13,8 +17,10 @@ import decok.dfcdvadstf.catframe.model.state.item.ItemStateNode;
 import decok.dfcdvadstf.catframe.model.state.item.ItemStateRoot;
 import decok.dfcdvadstf.catframe.model.state.property.ItemProperties;
 import makamys.dmod.bundle.BundleContents;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4d;
@@ -28,9 +34,9 @@ import java.util.Map;
  * 收纳袋决策树模型 provider —— 在标准 {@link ItemStateModel} 基础上拦截
  * "袋内选中物品"特殊模型路径，动态渲染袋内首条目。
  * <p>
- * CatFrame 的 items/ JSON 决策树不支持自定义 model type（{@code minecraft:special}
- * 与未知 type 直接抛 {@code JsonParseException}），因此袋内物品层用特殊模型路径
- * {@value #BUNDLE_SELECTED_ITEM_MARKER} 标记（资源侧为空模型占位），由本类在
+ * 袋内物品层使用通过 {@link ItemStateNode#registerNodeType} 注册的
+ * {@code dmod:bundle_selected_item} 决策树节点。节点解析为特殊模型路径
+ * {@value #BUNDLE_SELECTED_ITEM_MARKER}（资源侧为空模型占位），由本类在
  * {@link #render} 中拦截并替换为对袋内物品自身 CatFrame 模型的递归渲染。
  * <p>
  * 模型注册为 persistent（见 {@link ModelRegistry#registerItemModel}），压制
@@ -46,9 +52,32 @@ public class BundleItemModel extends ItemStateModel {
 
     /** 决策树中代表"袋内选中物品"层的特殊模型路径（资源侧为空模型占位）。 */
     public static final String BUNDLE_SELECTED_ITEM_MARKER = "dmod:item/bundle_selected_item";
+    public static final String BUNDLE_SELECTED_ITEM_NODE = "dmod:bundle_selected_item";
+
+    /**
+     * 袋口前片专用的末尾渲染组。半透明选中物品会被 CatFrame 排到普通不透明层之后；
+     * 若袋口仍走常规组，它就会先于半透明内容绘制，内容物便会透过袋面露出背景。
+     */
+    private static final RenderTypeKey BUNDLE_FRONT_BLOCK_ATLAS = RenderTypeRegistry.register(
+            new ResourceLocation("dmod", "bundle_front_block_atlas"),
+            TextureMap.locationBlocksTexture, true, Integer.MAX_VALUE);
+    private static final RenderTypeKey BUNDLE_FRONT_ITEM_ATLAS = RenderTypeRegistry.register(
+            new ResourceLocation("dmod", "bundle_front_item_atlas"),
+            TextureMap.locationItemsTexture, true, Integer.MAX_VALUE);
 
     private BundleItemModel(ItemStateNode rootNode) {
         super(rootNode);
+    }
+
+    /**
+     * Register the bundle's custom items/ decision-tree node with CatFrame 0.10.4+.
+     * Its unbaked representation is a marker leaf so normal model-path collection
+     * continues to discover the placeholder model and the renderer can substitute
+     * the selected stack at runtime.
+     */
+    public static void registerNodeTypes() {
+        ItemStateNode.registerNodeType(BUNDLE_SELECTED_ITEM_NODE,
+                (obj, context) -> new ItemStateNode.ModelLeaf(BUNDLE_SELECTED_ITEM_MARKER));
     }
 
     /**
@@ -105,8 +134,42 @@ public class BundleItemModel extends ItemStateModel {
 
             // transformation：命中 ModelLeaf 声明的物品模型渲染变换（可选，默认单位变换）
             Matrix4d transformation = findTransformationForModel(getRootNode(), path);
-            UniformRenderPipeline.renderItemQuads(part, stack, phase,
-                    null, 0, 0, 0, null, preTransform, transformation);
+            if (phase == RenderPhase.ITEM_GUI && isBundleFrontLayer(path)) {
+                // 等半透明物品层全部完成后再画袋口，保持高版本 appendItemLayers 的
+                // back -> selected item -> front 顺序，不让玻璃等半透明物品盖过袋面。
+                renderBundleFrontLayer(part, stack, phase, props, preTransform, transformation);
+            } else {
+                UniformRenderPipeline.renderItemQuads(part, stack, phase,
+                        null, 0, 0, 0, null, preTransform, transformation, props);
+            }
+        }
+    }
+
+    private static boolean isBundleFrontLayer(String path) {
+        return path.equals("dmod:item/bundle_open_front")
+                || (path.startsWith("dmod:item/") && path.endsWith("_bundle_open_front"));
+    }
+
+    /**
+     * 将袋口前片提交到比 CatFrame 普通半透明组更晚的渲染组。
+     * 两个 atlas 子部件分别使用对应的 atlas，但共享同一末尾排序键。
+     */
+    private static void renderBundleFrontLayer(BlockStateModelPart part, ItemStack stack,
+                                               RenderPhase phase, Map<String, Comparable<?>> props,
+                                               @Nullable Matrix4d preTransform,
+                                               @Nullable Matrix4d transformation) {
+        BlockStateModelPart[] split = part.atlasSplit();
+        for (int i = 0; i < split.length; i++) {
+            BlockStateModelPart sub = split[i];
+            if (sub == null || sub.isEmpty()) continue;
+            RenderTypeKey type = i == 0 ? BUNDLE_FRONT_BLOCK_ATLAS : BUNDLE_FRONT_ITEM_ATLAS;
+            RenderCommandBuffers.submit(new RenderSubmit(
+                    phase, sub, type,
+                    0, 0, 0, 0,
+                    null, stack, null, 0,
+                    preTransform, transformation,
+                    false, true,
+                    null, props));
         }
     }
 
