@@ -117,8 +117,11 @@ public class GridStone extends ModernBlock {
 
     /**
      * Mirrors 26.1.2 {@code FaceAttachedHorizontalDirectionalBlock#getStateForPlacement}:
-     * the dominant look direction picks the attach face, and a wall mount faces
-     * away from the player while a floor / ceiling mount faces with the player.
+     * the dominant look direction picks the attach face, and {@code facing} holds
+     * the horizontal direction the player looks at. For a wall mount that is the
+     * wall the block is attached to (the {@code x: 90} variant turns the model's
+     * leg-side towards it), so the legs stay against the wall instead of the
+     * player.
      */
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
@@ -134,8 +137,9 @@ public class GridStone extends ModernBlock {
         } else if (placer.rotationPitch < -45.0F) {
             return getMetadata(FACE_CEILING, lookFacing);
         } else {
-            // Wall mount: the model faces away from the wall the player looks at.
-            return getMetadata(FACE_WALL, (lookFacing + 2) & 3);
+            // Wall mount: the variant turns the model's leg-side towards `facing`,
+            // so it has to be the wall the player is looking at.
+            return getMetadata(FACE_WALL, lookFacing);
         }
     }
 
