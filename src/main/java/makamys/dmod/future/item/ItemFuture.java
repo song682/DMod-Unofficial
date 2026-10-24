@@ -1,9 +1,7 @@
 package makamys.dmod.future.item;
 
-import java.util.Arrays;
 import java.util.List;
 
-import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.model.impl.ModernItem;
@@ -33,12 +31,6 @@ public abstract class ItemFuture extends Item implements IItemFuture {
 
     @SideOnly(Side.CLIENT)
     public void appendTooltip(ItemStack stack, World world, List<String> tooltip) {}
-
-    @cpw.mods.fml.common.Optional.Method(modid = "CodeChickenCore")
-    @SideOnly(Side.CLIENT)
-    public List<ITooltipLineHandler> getTooltipHandlers(ItemStack stack){
-        return Arrays.asList();
-    }
 
     public boolean isEnabled() {
         return true;

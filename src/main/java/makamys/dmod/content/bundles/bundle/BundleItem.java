@@ -2,19 +2,15 @@ package makamys.dmod.content.bundles.bundle;
 
 import static makamys.dmod.DModConstants.MODID;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.model.IItemStateProvider;
 import decok.dfcdvadstf.catframe.model.state.property.ItemPropertyProvider;
 import makamys.dmod.ConfigDMod;
-import makamys.dmod.content.bundles.bundle.client.BundleTooltipRenderer;
 import makamys.dmod.future.inventory.SlotFuture;
 import makamys.dmod.future.item.ItemFuture;
 import makamys.dmod.future.item.ItemStackFuture;
@@ -410,14 +406,6 @@ public class BundleItem extends ItemFuture implements IItemStateProvider {
     }
 
     // ==================== Tooltip ====================
-
-    @SideOnly(Side.CLIENT)
-    @cpw.mods.fml.common.Optional.Method(modid = "CodeChickenCore")
-    @Override
-    public List<ITooltipLineHandler> getTooltipHandlers(ItemStack stack) {
-        List<ItemStack> stacks = BundleContents.getBundledStacks(stack).collect(Collectors.toList());
-        return Arrays.asList(new BundleTooltipRenderer(stacks, BundleContents.getOccupancy(stack), stack));
-    }
 
     @SideOnly(Side.CLIENT)
     @Override

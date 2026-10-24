@@ -8,15 +8,14 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
-import codechicken.nei.guihook.GuiContainerManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.ui.util.TextureStretching;
 import makamys.dmod.content.bundles.bundle.BundleContents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -52,19 +51,19 @@ import net.minecraft.util.ResourceLocation;
  * </pre>
  */
 @SideOnly(Side.CLIENT)
-public class BundleTooltipRenderer implements ITooltipLineHandler {
+public class BundleTooltipRenderer {
 
     // Per-sprite textures; each is paired with a .mcmeta carrying stretching metadata.
     private static final ResourceLocation TEX_SLOT =
-            new ResourceLocation(MODID, "textures/gui/sprites/container/item_background.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/bundle/item_background.png");
     private static final ResourceLocation TEX_SLOT_HIGHLIGHTED =
-            new ResourceLocation(MODID, "textures/gui/sprites/container/item_background_highlighted.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/bundle/item_background_highlighted.png");
     private static final ResourceLocation TEX_BAR_BORDER =
-            new ResourceLocation(MODID, "textures/gui/sprites/container/filled_bar_boader.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/bundle/filled_bar_boader.png");
     private static final ResourceLocation TEX_BAR_HALF_FILLED =
-            new ResourceLocation(MODID, "textures/gui/sprites/container/filled_bar_half_filled.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/bundle/filled_bar_half_filled.png");
     private static final ResourceLocation TEX_BAR_FILLED =
-            new ResourceLocation(MODID, "textures/gui/sprites/container/filled_bar_filled.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/bundle/filled_bar_filled.png");
 
     // Grid layout
     private static final int SLOT_W = 24, SLOT_H = 24;
@@ -128,11 +127,10 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
         this.rows = r;
     }
 
-    @Override
     public Dimension getSize() {
         if (isEmpty) {
             // Show hint text instead of grid
-            FontRenderer fr = GuiDraw.fontRenderer;
+            FontRenderer fr = fontRenderer();
             String hint = I18n.format("item.dmod.stained_bundle.empty_hint");
             int w = fr.getStringWidth(hint) + PAD * 2;
             int h = fr.FONT_HEIGHT + PAD * 2 + BAR_GAP + BORD_H;
@@ -144,15 +142,13 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
         return new Dimension(w, h);
     }
 
-    @Override
     public void draw(int x, int y) {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.enableGUIStandardItemLighting();
-        GuiContainerManager.enable2DRender();
 
         if (isEmpty) {
             drawEmptyHint(x + PAD, y + PAD);
-            drawBar(x + PAD, y + PAD + GuiDraw.fontRenderer.FONT_HEIGHT + BAR_GAP);
+            drawBar(x + PAD, y + PAD + fontRenderer().FONT_HEIGHT + BAR_GAP);
         } else {
             drawGrid(x + PAD, y + PAD);
             drawBar(x + PAD, y + PAD + rows * SLOT_H + BAR_GAP);
@@ -163,19 +159,19 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
     }
     
     private void drawEmptyHint(int x, int y) {
-        FontRenderer fr = GuiDraw.fontRenderer;
+        FontRenderer fr = fontRenderer();
         String hint = I18n.format("item.dmod.stained_bundle.empty_hint");
         int tw = fr.getStringWidth(hint);
         fr.drawStringWithShadow(hint,
                 x + (COLUMNS * SLOT_W - tw) / 2,
-                y + (GuiDraw.fontRenderer.FONT_HEIGHT) / 2,
+                y + fr.FONT_HEIGHT / 2,
                 0xFF888888);
     }
 
     private void drawGrid(int x, int y) {
         int cells = displayCount + (overflow > 0 ? 1 : 0);
         int totalCells = rows * COLUMNS;
-        FontRenderer fr = GuiDraw.fontRenderer;
+        FontRenderer fr = fontRenderer();
         // 高亮跟随选中索引（Sel）：已选中时高亮选中格子；未选中时保持左上角
         // （最新插入）高亮。选中项被折叠到显示区外时自然不出现高亮。
         // Highlight follows the selected index (Sel); without a selection the
@@ -211,19 +207,21 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
                 // "+N" overflow marker in the bottom-right cell.
                 String s = "+" + overflow;
                 int tw = fr.getStringWidth(s);
-                GuiContainerManager.drawItems.zLevel += 200f;
+                itemRender().zLevel += 200f;
                 fr.drawStringWithShadow(s,
                         sx + (SLOT_W - tw) / 2,
                         sy + (SLOT_H - fr.FONT_HEIGHT) / 2,
                         0xFFFFFFFF);
-                GuiContainerManager.drawItems.zLevel -= 200f;
+                itemRender().zLevel -= 200f;
             } else if (i < inventory.size()) {
                 ItemStack is = inventory.get(i);
                 if (is != null) {
-                    GuiContainerManager.drawItems.zLevel += 200f;
+                    RenderItem renderItem = itemRender();
+                    renderItem.zLevel += 200f;
                     // 24x24 cell, 16x16 item -> 4px inset
-                    GuiContainerManager.drawItem(sx + 4, sy + 4, is);
-                    GuiContainerManager.drawItems.zLevel -= 200f;
+                    renderItem.renderItemAndEffectIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), is, sx + 4, sy + 4);
+                    renderItem.renderItemOverlayIntoGUI(fr, Minecraft.getMinecraft().getTextureManager(), is, sx + 4, sy + 4, null);
+                    renderItem.zLevel -= 200f;
                 }
             }
         }
@@ -263,7 +261,7 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
             key = "item." + MODID + ".bundle.full";
         }
         if (key != null) {
-            FontRenderer fr = GuiDraw.fontRenderer;
+            FontRenderer fr = fontRenderer();
             String s = I18n.format(key);
             int tw = fr.getStringWidth(s);
             fr.drawStringWithShadow(s,
@@ -271,6 +269,14 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
                     y + (BORD_H - fr.FONT_HEIGHT) / 2 + 1,
                     0xFFFFFFFF);
         }
+    }
+
+    private static FontRenderer fontRenderer() {
+        return Minecraft.getMinecraft().fontRenderer;
+    }
+
+    private static RenderItem itemRender() {
+        return RenderItem.getInstance();
     }
 
     /**

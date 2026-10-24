@@ -2,7 +2,6 @@ package makamys.dmod.future.item;
 
 import java.util.List;
 
-import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,10 +27,6 @@ public interface IItemFuture {
 
     @SideOnly(Side.CLIENT)
     void appendTooltip(ItemStack stack, World world, List<String> tooltip);
-
-    @cpw.mods.fml.common.Optional.Method(modid = "CodeChickenCore")
-    @SideOnly(Side.CLIENT)
-    List<ITooltipLineHandler> getTooltipHandlers(ItemStack stack);
 
     /**
      * Returns whether this item is enabled according to the current config.
