@@ -24,3 +24,6 @@ color.dmod.brown=棕色
 color.dmod.green=绿色
 color.dmod.red=红色
 color.dmod.black=黑色
+
+tile.dmod.gridstone.name=砂轮
+container.grindstone_title=修复与祛魔
