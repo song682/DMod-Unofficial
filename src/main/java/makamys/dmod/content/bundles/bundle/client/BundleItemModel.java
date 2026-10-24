@@ -1,4 +1,4 @@
-package makamys.dmod.bundle.client;
+package makamys.dmod.content.bundles.bundle.client;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,7 +16,7 @@ import decok.dfcdvadstf.catframe.model.state.item.ItemStateModel;
 import decok.dfcdvadstf.catframe.model.state.item.ItemStateNode;
 import decok.dfcdvadstf.catframe.model.state.item.ItemStateRoot;
 import decok.dfcdvadstf.catframe.model.state.property.ItemProperties;
-import makamys.dmod.bundle.BundleContents;
+import makamys.dmod.content.bundles.bundle.BundleContents;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -82,7 +82,6 @@ public class BundleItemModel extends ItemStateModel {
 
     /**
      * 从 {@code assets/{namespace}/items/{name}.json} 解析决策树并构造模型。
-     * 与 CatFrame 的 items/ 自动注册共用同一份 JSON，互不冲突。
      */
     public static BundleItemModel load(String namespace, String name) {
         String resource = "/assets/" + namespace + "/items/" + name + ".json";
@@ -185,8 +184,7 @@ public class BundleItemModel extends ItemStateModel {
             // 选中条目未接入 CatFrame 模型系统 → 跳过该层（袋口不显示物品）
             return;
         }
-        // 防嵌套递归：选中条目注册的模型就是本模型（即同一物品套自己）时跳过。
-        // 重量上限（4/64 每层）天然限制嵌套深度，此处再兜底。
+        // 防嵌套递归：选中条目注册的模型就是本模型时跳过。
         if (ModelRegistry.getRegisteredItemModel(selectedItem) == this) {
             return;
         }

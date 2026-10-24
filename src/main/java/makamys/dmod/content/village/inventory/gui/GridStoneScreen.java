@@ -1,4 +1,4 @@
-package makamys.dmod.client.gui;
+package makamys.dmod.content.village.inventory.gui;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;

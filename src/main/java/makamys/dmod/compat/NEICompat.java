@@ -1,7 +1,7 @@
 package makamys.dmod.compat;
 
 import codechicken.nei.guihook.GuiContainerManager;
-import makamys.dmod.client.tooltip.DTooltipHandler;
+import makamys.dmod.content.bundles.tooltip.DTooltipHandler;
 
 public class NEICompat {
     

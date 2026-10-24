@@ -41,6 +41,14 @@ public class DMod
     public void preInit(FMLPreInitializationEvent event) {
         // Load config first - this is the standard Forge timing
         ConfigDMod.reload(false);
+
+        // Blocks consult the shared feature toggles, so they register right
+        // after the config has been read.
+        DModBlocks.preInit();
+
+        // Register client-side CatFrame item-state extensions before its first
+        // texture stitch parses the bundle decision-tree JSON.
+        proxy.preInit();
         
         // Then register items with correct config values
         DModItems.preInit();
@@ -60,6 +68,7 @@ public class DMod
     public void postInit(FMLPostInitializationEvent event) {
         ConfigDMod.reload();
         DModItems.postInit();
+        DModBlocks.postInit();
     }
     
     @EventHandler

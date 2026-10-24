@@ -1,4 +1,4 @@
-package makamys.dmod.bundle;
+package makamys.dmod.content.bundles.bundle;
 
 import java.util.List;
 import java.util.Objects;

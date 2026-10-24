@@ -14,7 +14,6 @@ import net.minecraft.stats.StatCrafting;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ChatComponentTranslation;
 
-// TODO support crafting and depletion too
 public class StatRegistry {
     
     public static StatRegistry instance = new StatRegistry();

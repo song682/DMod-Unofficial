@@ -1,4 +1,4 @@
-package makamys.dmod.bundle;
+package makamys.dmod.content.bundles.bundle;
 
 /**
  * 16 种 bundle 染色的单一数据源 (Single source of truth for the 16 bundle dye colors).

@@ -6,15 +6,27 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import decok.dfcdvadstf.catframe.model.ModelRegistry;
+import decok.dfcdvadstf.catframe.model.impl.ModernBlock;
 import makamys.dmod.ConfigDMod;
+import makamys.dmod.DModBlocks;
 import makamys.dmod.DModItems;
-import makamys.dmod.bundle.client.BundleItemModel;
+import makamys.dmod.content.village.block.GridStone;
+import makamys.dmod.content.bundles.bundle.client.BundleItemModel;
 import makamys.dmod.compat.NEICompat;
 import makamys.dmod.future.item.ItemFuture;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class DProxyClient extends DProxyCommon {
+
+    @Override
+    public void preInit() {
+        super.preInit();
+
+        // CatFrame parses items/ decision trees during its first texture stitch,
+        // before FML initialization. Register the custom node during preInit.
+        BundleItemModel.registerNodeTypes();
+    }
     
     @Override
     public void init() {
@@ -26,37 +38,35 @@ public class DProxyClient extends DProxyCommon {
         } else {
             LOGGER.warn("NotEnoughItems was not found. Some optional features will not work.");
         }
-        
-        BundleItemModel.registerNodeTypes();
+
         registerBundleModels();
+        registerBlockModels();
     }
-    
+
     /**
-     * Register the CatFrame decision-tree models for both bundle items.
-     * <p>
-     * Persistent registration deliberately suppresses the automatic items/ registration:
-     * the custom {@code dmod:bundle_selected_item} node is registered before the
-     * JSON is parsed, while texture collection is still done independently by
-     * CatFrame's NamespaceLoadTask — the two do not conflict.
-     * <p>
-     * NOTE: CatFrame's incremental rebuild ({@code registerItemModels}, fired on the
-     * item-atlas stitch Post) unconditionally overwrites registered models from
-     * items/ JSONs (no containsKey guard in step 4a), so we re-assert our
-     * registration with LOWEST priority after CatFrame's own handler.
+     * Hands the grindstone over to CatFrame's model pipeline. The typed state
+     * definition is registered first so the pipeline resolves variants through
+     * it (and therefore bakes the blockstate's x / y rotation, which the wall
+     * and ceiling orientations depend on).
      */
-    private void registerBundleModels() {
-        if(ConfigDMod.enableBundle) {
-            ModelRegistry.registerItemModel(DModItems.bundle, BundleItemModel.load("dmod", "bundle"));
-        }
-        if(ConfigDMod.modernBundle) {
-            ModelRegistry.registerItemModel(DModItems.modernBundleItem, BundleItemModel.load("dmod", "stained_bundle"));
+    private void registerBlockModels() {
+        if (DModBlocks.gridstone instanceof GridStone) {
+            GridStone gridstone = (GridStone) DModBlocks.gridstone;
+            ModelRegistry.registerStateDefinition(gridstone, gridstone.getStateDefinition());
+            ModernBlock.register(gridstone);
         }
     }
-    
+
+    private void registerBundleModels() {
+        if (ConfigDMod.enableBundle) {
+            ModelRegistry.registerItemModel(DModItems.bundle, BundleItemModel.load("dmod", "bundle"));
+            ModelRegistry.registerItemModel(DModItems.stainedBundle, BundleItemModel.load("dmod", "stained_bundle"));
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onTextureStitchPost(TextureStitchEvent.Post event) {
-        // Re-assert bundle registrations after CatFrame's incremental item-model rebuild
-        if(event.map.getTextureType() == 1) {
+        if (event.map.getTextureType() == 1) {
             registerBundleModels();
         }
     }

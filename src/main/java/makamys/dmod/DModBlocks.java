@@ -2,7 +2,7 @@ package makamys.dmod;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import decok.dfcdvadstf.catframe.recipe.TagRecipeManager;
-import makamys.dmod.client.village.block.GridStone;
+import makamys.dmod.content.village.block.GridStone;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

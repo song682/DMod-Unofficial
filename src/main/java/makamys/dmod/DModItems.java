@@ -2,8 +2,8 @@ package makamys.dmod;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import decok.dfcdvadstf.catframe.recipe.TagRecipeManager;
-import makamys.dmod.bundle.BundleColor;
-import makamys.dmod.bundle.BundleItem;
+import makamys.dmod.content.bundles.bundle.BundleColor;
+import makamys.dmod.content.bundles.bundle.BundleItem;
 import makamys.dmod.future.item.IItemFuture;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -12,16 +12,14 @@ import net.minecraft.item.ItemStack;
 // Class structure insprired by Et Futurum
 
 public class DModItems {
-    
-    // Classic bundle (always available when enableBundle=true)
+
     public static Item bundle;
-    // Modern dyeable bundle (available when modernBundle=true)
-    public static Item modernBundleItem;
+    public static Item stainedBundle;
     
     public static void preInit() {
-        // initItem() consults isEnabled() (enableBundle / modernBundle)
+        // initItem() consults the shared enableBundle toggle.
         bundle = initItem(new BundleItem(false));
-        modernBundleItem = initItem(new BundleItem(true));
+        stainedBundle = initItem(new BundleItem(true));
     }
     
     public static void postInit() {
@@ -29,21 +27,23 @@ public class DModItems {
     }
     
     private static void registerRecipes() {
-        // Both versions need the basic crafting recipe (CatFrame ShapedTagRecipe,
-        // mirrored by default — equivalent to the old GameRegistry behavior)
+        if (!ConfigDMod.enableBundle || bundle == null || stainedBundle == null) {
+            return;
+        }
+
+        // Both bundle variants share the basic crafting recipe.
         for(Item bundleCraftingItem : ConfigDMod.bundleCraftingItems) {
-            TagRecipeManager.addShaped(new ItemStack(bundle), "SLS", "L L", "LLL", 'L', bundleCraftingItem, 'S', Items.string);
+            for (Item output : new Item[] { bundle, stainedBundle }) {
+                TagRecipeManager.addShaped(new ItemStack(output), "SLS", "L L", "LLL", 'L', bundleCraftingItem, 'S', Items.string);
+            }
         }
         
-        // Only modern bundle needs dye recipes. BundleColor is the single source
-        // of truth for the dye -> bundle meta mapping (fixes the old 7/8/9 dye
-        // mis-mapping bug); 32767 = wildcard metadata.
-        if (ConfigDMod.modernBundle && modernBundleItem != null) {
-            for(BundleColor color : BundleColor.values()) {
-                TagRecipeManager.addShapeless(new ItemStack(modernBundleItem, 1, color.getBundleMeta()),
-                        new ItemStack(modernBundleItem, 1, 32767),
-                        new ItemStack(Items.dye, 1, color.getDyeMeta()));
-            }
+        // BundleColor is the single source of truth for dye -> bundle meta mapping;
+        // 32767 = wildcard metadata.
+        for(BundleColor color : BundleColor.values()) {
+            TagRecipeManager.addShapeless(new ItemStack(stainedBundle, 1, color.getBundleMeta()),
+                    new ItemStack(stainedBundle, 1, 32767),
+                    new ItemStack(Items.dye, 1, color.getDyeMeta()));
         }
     }
     

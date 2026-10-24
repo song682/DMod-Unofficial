@@ -6,6 +6,7 @@ import java.util.List;
 import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import decok.dfcdvadstf.catframe.model.impl.ModernItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;

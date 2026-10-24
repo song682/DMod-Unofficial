@@ -1,4 +1,4 @@
-package makamys.dmod.client.tooltip;
+package makamys.dmod.content.bundles.tooltip;
 
 import java.util.List;
 import java.util.stream.Collectors;

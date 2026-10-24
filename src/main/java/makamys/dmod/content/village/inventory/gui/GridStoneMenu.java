@@ -1,4 +1,4 @@
-package makamys.dmod.client.gui;
+package makamys.dmod.content.village.inventory.gui;
 
 import java.util.Map;
 import java.util.Random;

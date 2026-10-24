@@ -1,4 +1,4 @@
-package makamys.dmod.client.village.block;
+package makamys.dmod.content.village.block;
 
 import static makamys.dmod.DModConstants.MODID;
 
@@ -11,7 +11,7 @@ import decok.dfcdvadstf.catframe.model.state.property.Property;
 import decok.dfcdvadstf.catframe.model.state.property.StateDefinitions;
 import makamys.dmod.DGuiHandler;
 import makamys.dmod.DMod;
-import makamys.dmod.client.DModTabs;
+import makamys.dmod.content.DModTabs;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

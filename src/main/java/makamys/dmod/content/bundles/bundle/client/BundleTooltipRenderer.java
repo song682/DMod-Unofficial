@@ -1,4 +1,4 @@
-package makamys.dmod.bundle.client;
+package makamys.dmod.content.bundles.bundle.client;
 
 import static makamys.dmod.DModConstants.MODID;
 
@@ -14,7 +14,7 @@ import codechicken.nei.guihook.GuiContainerManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.ui.util.TextureStretching;
-import makamys.dmod.bundle.BundleContents;
+import makamys.dmod.content.bundles.bundle.BundleContents;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
@@ -56,15 +56,15 @@ public class BundleTooltipRenderer implements ITooltipLineHandler {
 
     // Per-sprite textures; each is paired with a .mcmeta carrying stretching metadata.
     private static final ResourceLocation TEX_SLOT =
-            new ResourceLocation(MODID, "textures/gui/container/item_background.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/item_background.png");
     private static final ResourceLocation TEX_SLOT_HIGHLIGHTED =
-            new ResourceLocation(MODID, "textures/gui/container/item_background_highlighted.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/item_background_highlighted.png");
     private static final ResourceLocation TEX_BAR_BORDER =
-            new ResourceLocation(MODID, "textures/gui/container/filled_bar_boader.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/filled_bar_boader.png");
     private static final ResourceLocation TEX_BAR_HALF_FILLED =
-            new ResourceLocation(MODID, "textures/gui/container/filled_bar_half_filled.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/filled_bar_half_filled.png");
     private static final ResourceLocation TEX_BAR_FILLED =
-            new ResourceLocation(MODID, "textures/gui/container/filled_bar_filled.png");
+            new ResourceLocation(MODID, "textures/gui/sprites/container/filled_bar_filled.png");
 
     // Grid layout
     private static final int SLOT_W = 24, SLOT_H = 24;

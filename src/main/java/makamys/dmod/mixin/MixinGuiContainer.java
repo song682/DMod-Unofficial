@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import makamys.dmod.bundle.BundleItem;
+import makamys.dmod.content.bundles.bundle.BundleItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 /**

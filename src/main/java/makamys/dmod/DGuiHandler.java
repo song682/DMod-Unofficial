@@ -1,8 +1,8 @@
 package makamys.dmod;
 
 import cpw.mods.fml.common.network.IGuiHandler;
-import makamys.dmod.client.gui.GridStoneScreen;
-import makamys.dmod.client.gui.GridStoneMenu;
+import makamys.dmod.content.village.inventory.gui.GridStoneScreen;
+import makamys.dmod.content.village.inventory.gui.GridStoneMenu;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 

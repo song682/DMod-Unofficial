@@ -1,4 +1,4 @@
-package makamys.dmod.bundle;
+package makamys.dmod.content.bundles.bundle;
 
 import static makamys.dmod.DModConstants.MODID;
 
@@ -12,10 +12,9 @@ import codechicken.lib.gui.GuiDraw.ITooltipLineHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.model.IItemStateProvider;
-import decok.dfcdvadstf.catframe.model.render.api.RenderPhase;
 import decok.dfcdvadstf.catframe.model.state.property.ItemPropertyProvider;
 import makamys.dmod.ConfigDMod;
-import makamys.dmod.bundle.client.BundleTooltipRenderer;
+import makamys.dmod.content.bundles.bundle.client.BundleTooltipRenderer;
 import makamys.dmod.future.inventory.SlotFuture;
 import makamys.dmod.future.item.ItemFuture;
 import makamys.dmod.future.item.ItemStackFuture;
@@ -36,14 +35,15 @@ import net.minecraft.world.World;
 import org.lwjgl.input.Mouse;
 
 /**
- * 统一的收纳袋物品类 —— 替换旧的 {@code ItemBundle}（经典）与 {@code ItemModernBundle}
- * （现代染色）两个重复物品类。
+ * 统一的收纳袋物品类 —— 替换旧的 {@code ItemBundle}（无染色）与 {@code ItemModernBundle}
+ * （染色）两个重复物品类。
  * <p>
  * 以 {@code colored} 构造参数实例化两个注册对象（{@code dmod:bundle} /
- * {@code dmod:stained_bundle}），注册名、NBT、配置键与旧版完全一致，旧存档无缝兼容。
+ * {@code dmod:stained_bundle}），注册名与 NBT 格式保持兼容；两个变体由
+ * {@code enableBundle} 配置项统一控制。
  * <p>
  * 渲染完全交给 CatFrame 决策树模型（见 {@code assets/dmod/items/*.json} 与
- * {@link BundleItemModel}），本类不再持有任何 IIcon 或渲染逻辑。属性经
+ * {@link makamys.dmod.content.bundles.bundle.client.BundleItemModel}），本类不再持有任何 IIcon 或渲染逻辑。属性经
  * {@link #getPropertyDefinitions()} 声明，由 CatFrame 发现阶段自动注册：
  * <ul>
  *   <li>{@code dmod:bundle/color} — 16 色分派（仅染色变体）</li>
@@ -69,7 +69,7 @@ import org.lwjgl.input.Mouse;
  */
 public class BundleItem extends ItemFuture implements IItemStateProvider {
 
-    /** true = stained_bundle（16 色），false = bundle（经典） */
+    /** true = stained_bundle（16 色），false = bundle（无染色） */
     private final boolean colored;
 
     private static final int ITEM_BAR_COLOR = 0x6666FF;
@@ -87,7 +87,7 @@ public class BundleItem extends ItemFuture implements IItemStateProvider {
 
     @Override
     public boolean isEnabled() {
-        return colored ? ConfigDMod.modernBundle : ConfigDMod.enableBundle;
+        return ConfigDMod.enableBundle;
     }
 
     // ==================== 自定义属性声明（CatFrame 发现时自动注册） ====================
@@ -151,7 +151,7 @@ public class BundleItem extends ItemFuture implements IItemStateProvider {
         Minecraft mc = Minecraft.getMinecraft();
         int mouseX = Mouse.getEventX() * gui.width / mc.displayWidth;
         int mouseY = gui.height - Mouse.getEventY() * gui.height / mc.displayHeight - 1;
-        AccessorGuiContainer acc = (AccessorGuiContainer) (Object) gui;
+        AccessorGuiContainer acc = (AccessorGuiContainer) gui;
         return new int[] { mouseX, mouseY, mouseX - acc.getGuiLeft(), mouseY - acc.getGuiTop() };
     }
 
@@ -236,16 +236,6 @@ public class BundleItem extends ItemFuture implements IItemStateProvider {
             }
         }
     }
-
-    /**
-     * 渲染由注册到 {@code ModelRegistry} 的 {@link BundleItemModel} 承担；本实现仅供
-     * CatFrame 发现阶段作标记用（自动注册 dmod namespace 与上述属性），永远不会被调用
-     * （注册表条目始终被 {@code BundleItemModel} 覆盖）。
-     * <p>Rendering is handled by the registered {@link BundleItemModel}; this no-op
-     * exists only so CatFrame's discovery can pick this item up. It is never invoked.
-     */
-    @Override
-    public void render(ItemStack stack, RenderPhase phase) {}
 
     // ==================== 交互（委托 BundleContents） ====================
 

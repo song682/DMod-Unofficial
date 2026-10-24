@@ -1,7 +1,6 @@
-package makamys.dmod.client;
+package makamys.dmod.content;
 
 import makamys.dmod.DModItems;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.StatCollector;
