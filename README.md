@@ -26,7 +26,8 @@ More info [in the wiki](https://github.com/makamys/DMod/wiki/Fox).
 ## Bundle
 
 The bundle has three layers, which let it show the contents in the item like it opens.   
-Also the tooltip is also modernized.    
+Also the tooltip is also modernized.  
+NEI is not a must after 2.3.0
 
 ---
 
