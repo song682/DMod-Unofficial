@@ -1,15 +1,18 @@
-package makamys.dmod;
+package makamys.dmod.mixin;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import makamys.dmod.ConfigDMod;
 import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.MixinEnvironment.Side;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+
+import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 
 public class MixinConfigPlugin implements IMixinConfigPlugin {
     
@@ -27,11 +30,11 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if(Arrays.asList(
-                "makamys.dmod.mixin.MixinRenderItem"
+                "makamys.dmod.mixin.middle.MixinRenderItem"
                 ).contains(mixinClassName)){
             return MixinEnvironment.getCurrentEnvironment().getSide() == Side.CLIENT && ConfigDMod.durabilityBarColor;
         } else if(Arrays.asList(
-                "makamys.dmod.mixin.MixinContainer"
+                "makamys.dmod.mixin.middle.MixinContainer"
                 ).contains(mixinClassName)){
             return ConfigDMod.enableBundle;
         } else {
@@ -47,8 +50,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public List<String> getMixins() {
-        // Return empty list instead of null
-        return Collections.emptyList();
+        return IMixins.getMixins(Mixins.class);
     }
 
     @Override

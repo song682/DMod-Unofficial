@@ -1,6 +1,6 @@
 package makamys.dmod.content.village.block;
 
-import static makamys.dmod.DModConstants.MODID;
+import static makamys.dmod.init.DModConstants.MODID;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -5,11 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemStackFuture {
     
-    public static void decrement(ItemStack dis, int count) {
-        // TODO is this correct?
-        increment(dis, -count);
-    }
-    
     public static void increment(ItemStack dis, int count) {
         dis.stackSize += count;
     }

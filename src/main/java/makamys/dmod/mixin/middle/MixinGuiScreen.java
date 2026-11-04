@@ -1,6 +1,6 @@
-package makamys.dmod.mixin;
+package makamys.dmod.mixin.middle;
 
-import makamys.dmod.mixin.accessor.AccessorGuiContainer;
+import makamys.dmod.mixin.middle.accessor.AccessorGuiContainer;
 import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,4 +1,4 @@
-package makamys.dmod.mixin;
+package makamys.dmod.mixin.middle;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

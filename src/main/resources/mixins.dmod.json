@@ -1,15 +1,8 @@
 {
     "required": true,
     "minVersion": "0.6",
-    "package": "makamys.dmod.mixin",
+    "package": "makamys.dmod.mixin.middle",
     "refmap": "mixins.dmod.refmap.json",
     "compatibilityLevel": "JAVA_8",
-    "mixins": [
-        "accessor.AccessorGuiContainer",
-    	"MixinContainer",
-    	"MixinGuiContainer",
-    	"MixinGuiScreen",
-    	"MixinRenderItem"
-    ],
-    "plugin": "makamys.dmod.MixinConfigPlugin"
+    "plugin": "makamys.dmod.mixin.MixinConfigPlugin"
 }

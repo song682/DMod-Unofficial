@@ -1,4 +1,4 @@
-package makamys.dmod.mixin.accessor;
+package makamys.dmod.mixin.middle.accessor;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

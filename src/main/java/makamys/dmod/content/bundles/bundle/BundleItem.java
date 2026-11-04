@@ -1,6 +1,6 @@
 package makamys.dmod.content.bundles.bundle;
 
-import static makamys.dmod.DModConstants.MODID;
+import static makamys.dmod.init.DModConstants.MODID;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +11,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.model.IItemStateProvider;
 import decok.dfcdvadstf.catframe.model.state.property.ItemPropertyProvider;
 import makamys.dmod.ConfigDMod;
+import makamys.dmod.content.DModTabs;
 import makamys.dmod.future.inventory.SlotFuture;
 import makamys.dmod.future.item.ItemFuture;
 import makamys.dmod.future.item.ItemStackFuture;
-import makamys.dmod.mixin.accessor.AccessorGuiContainer;
+import makamys.dmod.mixin.middle.accessor.AccessorGuiContainer;
 import makamys.dmod.util.StatRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -75,7 +76,7 @@ public class BundleItem extends ItemFuture implements IItemStateProvider {
         this.colored = colored;
         setMaxStackSize(1);
         setUnlocalizedName(MODID + "." + (colored ? "stained_bundle" : "bundle"));
-        setCreativeTab(CreativeTabs.tabTools);
+        setCreativeTab(DModTabs.dmodTabInstance);
         if (isEnabled()) {
             StatRegistry.instance.registerItem(this);
         }
@@ -250,7 +251,7 @@ public class BundleItem extends ItemFuture implements IItemStateProvider {
                 return true;
             }
             return false;
-        } else if (BundleContents.isAllowed(itemStack)) {
+        } else if (ConfigDMod.backpackHelper.isAllowed(itemStack)) {
             int count = (BundleContents.MAX_STORAGE - BundleContents.getOccupancy(stack)) / BundleContents.getItemOccupancy(itemStack);
             BundleContents.add(stack, SlotFuture.takeStackRange(slot, itemStack.stackSize, count, player));
             return true;

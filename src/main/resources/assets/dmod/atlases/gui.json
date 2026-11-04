@@ -4,6 +4,11 @@
             "type": "minecraft:directory",
             "source": "gui/container",
             "prefix": "gui/comtainer/"
+        },
+        {
+            "type": "minecraft:directory",
+            "source": "gui/sprites",
+            "prefix": "gui/sprites"
         }
     ]
 }

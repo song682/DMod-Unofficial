@@ -1,7 +1,8 @@
-package makamys.dmod;
+package makamys.dmod.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import decok.dfcdvadstf.catframe.recipe.TagRecipeManager;
+import makamys.dmod.ConfigDMod;
 import makamys.dmod.content.bundles.bundle.BundleColor;
 import makamys.dmod.content.bundles.bundle.BundleItem;
 import makamys.dmod.future.item.IItemFuture;

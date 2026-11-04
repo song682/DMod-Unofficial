@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 /**
  * Structured tooltip image component for the bundle preview grid and capacity bar.
  * <p>
- * Data-only holder; geometry lives in {@link BundleTooltipRenderer} and the client
- * render adapter in {@link BundleClientTooltipComponent}. Registered through
+ * Data-only holder; geometry and rendering live in
+ * {@link BundleClientTooltipComponent}. Registered through
  * CatFrame's {@code ItemTooltipImages} provider so the preview no longer depends on
  * NEI's CodeChickenLib line-handler mechanism.
  */

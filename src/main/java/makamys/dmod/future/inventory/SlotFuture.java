@@ -20,7 +20,7 @@ public class SlotFuture {
             if (itemStack == null) {
                 dis.putStack(stack.splitStack(i));
             } else if (ItemStackFuture.canCombine(itemStack, stack)) {
-                ItemStackFuture.decrement(stack, i);
+                ItemStackFuture.increment(stack, -i);
                 ItemStackFuture.increment(itemStack, i);
                 dis.putStack(itemStack);
             }

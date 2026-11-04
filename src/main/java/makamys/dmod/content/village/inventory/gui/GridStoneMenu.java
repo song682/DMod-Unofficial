@@ -6,7 +6,7 @@ import java.util.Random;
 import decok.dfcdvadstf.catframe.ui.screens.container.AbstractContainerMenu;
 import decok.dfcdvadstf.catframe.ui.screens.container.Container;
 import decok.dfcdvadstf.catframe.ui.screens.container.SimpleContainer;
-import makamys.dmod.DModBlocks;
+import makamys.dmod.init.DModBlocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityXPOrb;

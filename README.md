@@ -11,14 +11,7 @@ D-Mod is a mod that backports some features from later versions of Minecraft to 
 * Foxes(Before 2.2.0)
 * Bundles
 * Colorful bundles
-
-## Foxes
-
-Foxes have some (optional) extra features implemented. Untamed, they behave the same as they do in new vanilla versions. But as they defeat enemies, they gain EXP and unlock various new abilities and AI improvements.
-
-The major ones are getting healed when fed food, following the owner after being fed a sweet berry, and possessing Looting I intrinsically (does not stack with swords that have Looting). Foxes pass down their EXP to their children.
-
-More info [in the wiki](https://github.com/makamys/DMod/wiki/Fox).
+* Grindstone
 
 > [!IMPORTANT]
 > After 2.2.0, hence the future Et Futurum Requiem add the foxes. This mods foxes will get its retirement. And hence the retirement, the prerequisites [Jar Utils](https://github.com/song682/jar-utils) is no longer needed.     
@@ -26,8 +19,12 @@ More info [in the wiki](https://github.com/makamys/DMod/wiki/Fox).
 ## Bundle
 
 The bundle has three layers, which let it show the contents in the item like it opens.   
-Also the tooltip is also modernized.  
-NEI is not a must after 2.3.0
+Also the tooltip is also modernized.
+
+## GrindStone
+Same as newer version
+
+##
 
 ---
 

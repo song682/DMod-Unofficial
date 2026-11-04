@@ -1,6 +1,6 @@
 package makamys.dmod;
 
-import static makamys.dmod.DModConstants.LOGGER;
+import static makamys.dmod.init.DModConstants.LOGGER;
 
 import java.io.File;
 import java.util.ArrayList;

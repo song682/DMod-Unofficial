@@ -130,7 +130,7 @@ public class BundleContents {
      * @return 实际装入的数量
      */
     public static int add(ItemStack bundle, ItemStack stack) {
-        if (stack != null && isAllowed(stack)) {
+        if (stack != null && ConfigDMod.backpackHelper.isAllowed(stack)) {
             NBTTagCompound nbt = ItemStackFuture.getOrCreateNbt(bundle);
             if (!nbt.hasKey("Items")) {
                 nbt.setTag("Items", new NBTTagList());
@@ -306,15 +306,6 @@ public class BundleContents {
         } else {
             nbt.setInteger("Sel", index);
         }
-    }
-
-    // ==================== 黑名单 ====================
-
-    /**
-     * 物品是否允许装入袋子（委托配置黑名单）。
-     */
-    public static boolean isAllowed(ItemStack stack) {
-        return ConfigDMod.backpackHelper.isAllowed(stack);
     }
 
     // ==================== 内部工具 ====================

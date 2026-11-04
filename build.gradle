@@ -100,7 +100,7 @@ dependencies {
     includeCompile('com.github.makamys:MCLib:0.3.7.7') {
         exclude group: "codechicken"
     }
-//    implementation "com.github.song682:CatFrame:${project.catframe_ver}"
+    implementation "com.github.song682:CatFrame:${project.catframe_ver}"
 }
 
 def dependenciesList = []

@@ -7,11 +7,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import decok.dfcdvadstf.catframe.model.impl.ModernItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public abstract class ItemFuture extends Item implements IItemFuture {
+public abstract class ItemFuture extends ModernItem implements IItemFuture {
 
     public boolean onStackClicked(ItemStack stack, Slot slot, int button, EntityPlayer player) {
         return false;
