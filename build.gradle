@@ -196,13 +196,10 @@ tasks.register('deobfJar', Jar) {
 tasks.register('sourcesJar', Jar) {
     dependsOn classes
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    classifier 'deobf-sources'
+    classifier 'sources'
 
     from sourceSets.main.allSource
     exclude "assets"
-    exclude "asjlib_at.cfg"
-    exclude "methods.bin"
-    exclude "McpToSrg.csv"
 }
 
 artifacts {

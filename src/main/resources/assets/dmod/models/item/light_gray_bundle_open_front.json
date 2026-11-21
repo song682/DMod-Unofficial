@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "dmod:items/light_gray_bundle_open_front"
-  }
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "dmod:items/light_gray_bundle_open_front"
+    }
 }

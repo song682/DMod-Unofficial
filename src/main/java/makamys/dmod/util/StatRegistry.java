@@ -3,7 +3,7 @@ package makamys.dmod.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import net.minecraft.item.Item;
@@ -36,8 +36,9 @@ public class StatRegistry {
             info.id = -1;
         }
     }
-    
-    @SubscribeEvent
+
+
+    @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent event) {
         for(RegistryInfo info : items) {
             Item item = info.item;
@@ -55,7 +56,7 @@ public class StatRegistry {
         applied = true;
     }
     
-    @SubscribeEvent
+    @Mod.EventHandler
     public void onServerStopped(FMLServerStoppedEvent event) {
         if(applied) {
             clearIDs();
@@ -72,5 +73,4 @@ public class StatRegistry {
             this.item = item;
         }
     }
-    
 }

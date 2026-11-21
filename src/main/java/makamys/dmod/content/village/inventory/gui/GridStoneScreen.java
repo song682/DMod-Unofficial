@@ -9,7 +9,6 @@ import decok.dfcdvadstf.catframe.ui.screens.container.AbstractContainerScreen;
 import decok.dfcdvadstf.catframe.ui.util.SpriteBlitter;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 /**
  * Grindstone screen — ported from 26.1.2 {@code GrindstoneScreen}, built on
@@ -23,9 +22,9 @@ import net.minecraft.util.StatCollector;
 public class GridStoneScreen extends AbstractContainerScreen<GridStoneMenu> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
-            "dmod:textures/gui/container/grindstone.png");
+            "dmod", "textures/gui/container/grindstone.png");
     private static final ResourceLocation ERROR_SPRITE = new ResourceLocation(
-            "dmod:textures/gui/sprites/container/grindstone/error.png");
+            "dmod", "textures/gui/sprites/container/grindstone/error.png");
 
     private static final int ERROR_X = 92;
     private static final int ERROR_Y = 31;
@@ -52,11 +51,10 @@ public class GridStoneScreen extends AbstractContainerScreen<GridStoneMenu> {
         }
     }
 
+
     @Override
-    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("container.grindstone_title"), 8, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8,
-                this.ySize - 96 + 2, 4210752);
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     /**
