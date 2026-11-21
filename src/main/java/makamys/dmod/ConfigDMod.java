@@ -20,6 +20,7 @@ public class ConfigDMod {
 
     public static boolean enableBundle;
     public static boolean enableGridstone;
+    public static boolean enableLoom;
     public static List<Item> bundleCraftingItems;
     public static boolean showBundleFullness;
     public static boolean durabilityBarColor;
@@ -59,6 +60,8 @@ public class ConfigDMod {
         enableBundle = config.getBoolean("enableBundle", "_features", true, "");
         
         enableGridstone = config.getBoolean("enableGridstone", "_features", true, "");
+        
+        enableLoom = config.getBoolean("enableLoom", "_features", true, "");
         
         durabilityBarColor = config.getBoolean("durabilityBarColor", "Mixins", true, "Change the durability bar color of certain items (bundles)");
         

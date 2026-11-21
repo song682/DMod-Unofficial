@@ -28,4 +28,6 @@ color.dmod.red=Red
 color.dmod.black=Black
 
 tile.dmod.gridstone.name=Grindstone
+tile.dmod.loom.name=Loom
+container.loom=Loom
 container.grindstone_title=Repair & Disenchant

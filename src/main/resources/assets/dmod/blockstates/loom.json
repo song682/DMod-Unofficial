@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=north": {
+            "model": "dmod:block/loom"
+        },
+        "facing=east": {
+            "model": "dmod:block/loom",
+            "y": 90
+        },
+        "facing=south": {
+            "model": "dmod:block/loom",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "dmod:block/loom",
+            "y": 270
+        }
+    }
+}

@@ -26,4 +26,6 @@ color.dmod.red=红色
 color.dmod.black=黑色
 
 tile.dmod.gridstone.name=砂轮
+tile.dmod.loom.name=织布机
+container.loom=织布机
 container.grindstone_title=修复与祛魔
