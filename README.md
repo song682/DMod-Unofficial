@@ -24,7 +24,6 @@ D-Mod is a mod that backports some features from later versions of Minecraft to 
 
 # Dependencies
 
-* Item icons in bundle tooltips will only be drawn if [NEI](https://www.curseforge.com/minecraft/mc-mods/notenoughitems) is installed (I recommend the [GTNH fork](https://www.curseforge.com/minecraft/mc-mods/notenoughitems-gtnh)).
 * [CatFrame](https://github.com/song682/CatFrame) allow us showing the contents in the bundle for which provides the modern Item model rendering. 
 * [Jar Utils(2.2.0 only)](https://github.com/song682/jar-utils) for determine the GTNH version's [Et Futurum Requiem](https://github.com/GTNewHorizons/Et-Futurum-Requiem).
 * [UniMixins](https://github.com/LegacyModdingMC/UniMixins) provides a lot of Mixin support and the official's recommended mods [MixingASM](https://github.com/makamys/Mixingasm) is also self-contained. 
